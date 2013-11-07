@@ -6,23 +6,21 @@ package entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,8 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Transactions.findAll", query = "SELECT t FROM Transactions t"),
     @NamedQuery(name = "Transactions.findByTransactionDate", query = "SELECT t FROM Transactions t WHERE t.transactionDate = :transactionDate"),
     @NamedQuery(name = "Transactions.findByTransactionNumber", query = "SELECT t FROM Transactions t WHERE t.transactionNumber = :transactionNumber"),
-    @NamedQuery(name = "Transactions.findByFromAccount", query = "SELECT t FROM Transactions t WHERE t.fromAccount = :fromAccount"),
-    @NamedQuery(name = "Transactions.findByToAccount", query = "SELECT t FROM Transactions t WHERE t.toAccount = :toAccount"),
     @NamedQuery(name = "Transactions.findByAmount", query = "SELECT t FROM Transactions t WHERE t.amount = :amount"),
     @NamedQuery(name = "Transactions.findByToAmount", query = "SELECT t FROM Transactions t WHERE t.toAmount = :toAmount"),
     @NamedQuery(name = "Transactions.findByFromAmount", query = "SELECT t FROM Transactions t WHERE t.fromAmount = :fromAmount"),
@@ -53,14 +49,6 @@ public class Transactions implements Serializable {
     private Integer transactionNumber;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "FROM_ACCOUNT")
-    private int fromAccount;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "TO_ACCOUNT")
-    private int toAccount;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "AMOUNT")
     private int amount;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -75,8 +63,12 @@ public class Transactions implements Serializable {
     @Size(max = 30)
     @Column(name = "COMMENT")
     private String comment;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionNumber")
-    private Collection<Accounts> accountsCollection;
+    @JoinColumn(name = "FROM_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
+    @ManyToOne(optional = false)
+    private Accounts fromAccountNumber;
+    @JoinColumn(name = "TO_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
+    @ManyToOne(optional = false)
+    private Accounts toAccountNumber;
 
     public Transactions() {
     }
@@ -85,10 +77,8 @@ public class Transactions implements Serializable {
         this.transactionNumber = transactionNumber;
     }
 
-    public Transactions(Integer transactionNumber, int fromAccount, int toAccount, int amount, BigDecimal toAmount, BigDecimal fromAmount) {
+    public Transactions(Integer transactionNumber, int amount, BigDecimal toAmount, BigDecimal fromAmount) {
         this.transactionNumber = transactionNumber;
-        this.fromAccount = fromAccount;
-        this.toAccount = toAccount;
         this.amount = amount;
         this.toAmount = toAmount;
         this.fromAmount = fromAmount;
@@ -108,22 +98,6 @@ public class Transactions implements Serializable {
 
     public void setTransactionNumber(Integer transactionNumber) {
         this.transactionNumber = transactionNumber;
-    }
-
-    public int getFromAccount() {
-        return fromAccount;
-    }
-
-    public void setFromAccount(int fromAccount) {
-        this.fromAccount = fromAccount;
-    }
-
-    public int getToAccount() {
-        return toAccount;
-    }
-
-    public void setToAccount(int toAccount) {
-        this.toAccount = toAccount;
     }
 
     public int getAmount() {
@@ -158,13 +132,20 @@ public class Transactions implements Serializable {
         this.comment = comment;
     }
 
-    @XmlTransient
-    public Collection<Accounts> getAccountsCollection() {
-        return accountsCollection;
+    public Accounts getFromAccountNumber() {
+        return fromAccountNumber;
     }
 
-    public void setAccountsCollection(Collection<Accounts> accountsCollection) {
-        this.accountsCollection = accountsCollection;
+    public void setFromAccountNumber(Accounts fromAccountNumber) {
+        this.fromAccountNumber = fromAccountNumber;
+    }
+
+    public Accounts getToAccountNumber() {
+        return toAccountNumber;
+    }
+
+    public void setToAccountNumber(Accounts toAccountNumber) {
+        this.toAccountNumber = toAccountNumber;
     }
 
     @Override

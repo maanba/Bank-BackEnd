@@ -27,8 +27,6 @@ INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction
 INSERT INTO Transactions VALUES (date('1995-12-25'), (NEXT VALUE FOR transaction_id_sequence), 5002, 5003, 970, 970, -970, 'Til Mark Fappington');
 INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction_id_sequence), 5003, 5002, 300, 300, -300, 'Til Svans Svanesen');
 
-commit;
-
 SELECT *
 FROM Persons;
 SELECT *

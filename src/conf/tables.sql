@@ -53,5 +53,3 @@ to_amount decimal(10,2) NOT NULL,
 from_amount decimal(10,2) NOT NULL,
 comment varchar(30)
 );
-
-commit;

@@ -5,18 +5,19 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
-    @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id"),
+    @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
     @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password"),
     @NamedQuery(name = "Users.findByTitle", query = "SELECT u FROM Users u WHERE u.title = :title")})
 public class Users implements Serializable {
@@ -35,8 +36,9 @@ public class Users implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID")
-    private Integer id;
+    @Size(min = 1, max = 30)
+    @Column(name = "USERNAME")
+    private String username;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -47,29 +49,28 @@ public class Users implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "TITLE")
     private String title;
-    @JoinColumn(name = "ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Persons persons;
+    @ManyToMany(mappedBy = "usersCollection")
+    private Collection<Persons> personsCollection;
 
     public Users() {
     }
 
-    public Users(Integer id) {
-        this.id = id;
+    public Users(String username) {
+        this.username = username;
     }
 
-    public Users(Integer id, String password, String title) {
-        this.id = id;
+    public Users(String username, String password, String title) {
+        this.username = username;
         this.password = password;
         this.title = title;
     }
 
-    public Integer getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -88,18 +89,19 @@ public class Users implements Serializable {
         this.title = title;
     }
 
-    public Persons getPersons() {
-        return persons;
+    @XmlTransient
+    public Collection<Persons> getPersonsCollection() {
+        return personsCollection;
     }
 
-    public void setPersons(Persons persons) {
-        this.persons = persons;
+    public void setPersonsCollection(Collection<Persons> personsCollection) {
+        this.personsCollection = personsCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -110,7 +112,7 @@ public class Users implements Serializable {
             return false;
         }
         Users other = (Users) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
         return true;
@@ -118,7 +120,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Users[ id=" + id + " ]";
+        return "entities.Users[ username=" + username + " ]";
     }
     
 }
