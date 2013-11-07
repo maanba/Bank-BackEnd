@@ -33,9 +33,16 @@ comment varchar(30)
 
 CREATE TABLE Accounts (
 accountType varchar(30) NOT NULL,
-transaction_number int NOT NULL REFERENCES Transactions,
+-- transaction_number int NOT NULL REFERENCES Transactions,
 accountNumber int PRIMARY KEY,
 interest double NOT NULL,
 balance decimal(10,2) NOT NULL,
 created date NOT NULL
 );
+
+-- CREATE TABLE Person_Accounts (
+-- id VARCHAR(50) REFERENCES Persons (id),
+-- accountNumber VARCHAR(50) REFERENCES Accounts (accountNumber),
+-- PRIMARY KEY (id, accountNumber)
+-- );
+
