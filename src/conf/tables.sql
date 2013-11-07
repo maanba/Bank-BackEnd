@@ -32,7 +32,7 @@ CREATE TABLE Transactions (
 transaction_date date,
 transaction_number int PRIMARY KEY,
 from_account_id int NOT NULL references Account(account_id),
-to_account_id int NOT NULL,
+to_account_id int NOT NULL references Account(account_id),
 amount int NOT NULL,
 to_amount decimal(10,2) NOT NULL,
 from_amount decimal(10,2) NOT NULL,
