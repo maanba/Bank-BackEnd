@@ -31,8 +31,8 @@ CONSTRAINT FK_Person_id FOREIGN KEY (person_id) references Persons(person_id)
 CREATE TABLE Transactions (
 transaction_date date,
 transaction_number int PRIMARY KEY,
-from_account_id int NOT NULL references Account(account_id),
-to_account_id int NOT NULL references Account(account_id),
+from_account_number int NOT NULL references Account(account_number),
+to_account_number int NOT NULL references Account(account_number),
 amount int NOT NULL,
 to_amount decimal(10,2) NOT NULL,
 from_amount decimal(10,2) NOT NULL,
@@ -40,18 +40,11 @@ comment varchar(30)
 );
 
 CREATE TABLE Accounts (
-account_id int NOT NULL,
+person_id int NOT NULL REFERENCES Persons(person_id,
 account_type varchar(30) NOT NULL,
--- transaction_number int NOT NULL REFERENCES Transactions,
-account_number int PRIMARY KEY,
+account_number int PRIMARY KEY NOT NULL,
 interest double NOT NULL,
 balance decimal(10,2) NOT NULL,
 created date NOT NULL
 );
-
--- CREATE TABLE Person_Accounts (
--- id VARCHAR(50) REFERENCES Persons (id),
--- accountNumber VARCHAR(50) REFERENCES Accounts (accountNumber),
--- PRIMARY KEY (id, accountNumber)
--- );
 
