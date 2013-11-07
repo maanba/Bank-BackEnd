@@ -32,6 +32,7 @@ comment varchar(30)
 );
 
 CREATE TABLE Accounts (
+person_id int NOT NULL,
 accountType varchar(30) NOT NULL,
 -- transaction_number int NOT NULL REFERENCES Transactions,
 accountNumber int PRIMARY KEY,
