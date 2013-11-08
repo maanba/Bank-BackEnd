@@ -3,19 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package control;
 
 import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
-import dto.DTOUser;
 import entities.Accounts;
 import entities.Persons;
 import entities.Users;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,9 +25,10 @@ import javax.persistence.Query;
  */
 @Stateless
 public class BankContractBean implements BankInterface {
+
     @PersistenceContext(unitName = "BankBackendPU")
     private EntityManager em;
-    
+
     @Override
     public DTOPerson getPerson(int id) {
         Query q = em.createNamedQuery("Person.findById");
@@ -111,26 +110,43 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<String> getAccountTypes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNamedQuery("Roles.findAll");
+        ArrayList<String> result = new ArrayList<>();
+        
+        List<String> returned = q.getResultList();
+        for(String value : returned) {
+            result.add(value);
+        }
+        
+        return result;
     }
 
     @Override
     public void saveAccount(int userId, String type, double intrest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DTOAccount acc = getAccountByAccountnumber(userId);
+        acc.setAccountType(type);
+        acc.setInterest(intrest);
+        
+        persist(acc);
     }
 
     @Override
     public void savePerson(String role, String password, DTOPerson person) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Generate userpassword
+        String username = person.getLastName() + person.getId() + role;
+        Users newUser = new Users(username, password);
+
+        // Persist the objects
+        persist(newUser);
+        persist(person);
     }
-    
+
     @Override
     public String sayHello(String name) {
-    return "Hello from " + name + " in the Bean";
+        return "Hello from " + name + " in the Bean";
     }
 
     public void persist(Object object) {
         em.persist(object);
     }
-    
 }
