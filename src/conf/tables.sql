@@ -3,6 +3,7 @@ DROP TABLE Accounts;
 DROP TABLE Person_Users;
 DROP TABLE Users;
 DROP TABLE Persons;
+DROP TABLE Roles;
 DROP SEQUENCE person_id_sequence RESTRICT;
 DROP SEQUENCE transaction_id_sequence RESTRICT;
 DROP SEQUENCE account_number_sequence RESTRICT;
@@ -22,10 +23,14 @@ city varchar(30) NOT NULL,
 phonenumber int NOT NULL
 );
 
+CREATE TABLE Roles (
+title varchar(30) PRIMARY KEY
+);
+
 CREATE TABLE Users (
 username varchar(30) PRIMARY KEY NOT NULL,
 password varchar(30) NOT NULL,
-title varchar(30) NOT NULL
+title varchar(30) NOT NULL REFERENCES Roles (title)
 );
 
 CREATE TABLE Person_Users (
