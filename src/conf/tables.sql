@@ -1,12 +1,20 @@
-DROP TABLE Accounts;
-DROP TABLE Users;
 DROP TABLE Transactions;
+DROP TABLE Accounts;
+DROP TABLE Person_Users;
+DROP TABLE Users;
 DROP TABLE Persons;
+DROP SEQUENCE person_id_sequence RESTRICT;
+DROP SEQUENCE transaction_id_sequence RESTRICT;
+DROP SEQUENCE account_number_sequence RESTRICT;
+
+CREATE SEQUENCE person_id_sequence START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE transaction_id_sequence START WITH 100 INCREMENT BY 1;
+CREATE SEQUENCE account_number_sequence START WITH 5000 INCREMENT BY 1;
 
 CREATE TABLE Persons (
-id int PRIMARY KEY,
-firstName varchar(30) NOT NULL,
-lastName varchar(30) NOT NULL,
+person_id int PRIMARY KEY,
+first_name varchar(30) NOT NULL,
+last_name varchar(30) NOT NULL,
 email varchar(50) NOT NULL,
 street varchar(50) NOT NULL,
 zip int NOT NULL,
@@ -15,27 +23,31 @@ phonenumber int NOT NULL
 );
 
 CREATE TABLE Users (
-id int PRIMARY KEY REFERENCES Persons,
+username varchar(30) PRIMARY KEY NOT NULL,
 password varchar(30) NOT NULL,
 title varchar(30) NOT NULL
+);
+
+CREATE TABLE Person_Users (
+username varchar(30) NOT NULL REFERENCES Users(username),
+person_id int NOT NULL REFERENCES Persons(person_id),
+PRIMARY KEY (username, person_id)
+);
+
+CREATE TABLE Accounts (
+person_id int NOT NULL REFERENCES Persons(person_id),
+account_type varchar(30) NOT NULL,
+account_number int PRIMARY KEY NOT NULL,
+interest double NOT NULL,
+balance decimal(10,2) NOT NULL,
+created date NOT NULL
 );
 
 CREATE TABLE Transactions (
 transaction_date date,
 transaction_number int PRIMARY KEY,
-from_Account int NOT NULL,
-to_Account int NOT NULL,
+from_account_number int NOT NULL references Accounts(account_number),
+to_account_number int NOT NULL references Accounts(account_number),
 amount int NOT NULL,
-to_Amount decimal(10,2) NOT NULL,
-from_Amount decimal(10,2) NOT NULL,
 comment varchar(30)
-);
-
-CREATE TABLE Accounts (
-accountType varchar(30) NOT NULL,
-transaction_number int NOT NULL REFERENCES Transactions,
-accountNumber int PRIMARY KEY,
-interest double NOT NULL,
-balance decimal(10,2) NOT NULL,
-created date NOT NULL
 );
