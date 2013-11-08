@@ -3,6 +3,10 @@ INSERT INTO Persons  VALUES ((NEXT VALUE FOR person_id_sequence), 'Daniel', 'Tho
 INSERT INTO Persons  VALUES ((NEXT VALUE FOR person_id_sequence), 'Mark', 'Fappington', 'maanba@mail.com', 'Fappingvej 6', 2600, 'Glostrup', 88888888);
 INSERT INTO Persons  VALUES ((NEXT VALUE FOR person_id_sequence), 'Svans', 'Svanesen', 'mads@mail.com', 'Madsensvej 27', 2620, 'Albertslund', 77777777);
 
+INSERT INTO Roles VALUES ('Customer');
+INSERT INTO Roles VALUES ('BankTeller');
+INSERT INTO Roles VALUES ('Manager');
+
 INSERT INTO Users VALUES ('Imba1000Customer', 'password1', 'Customer');
 INSERT INTO Users VALUES ('Thomsen1001Customer', 'password2', 'Customer');
 INSERT INTO Users VALUES ('Fappington1002BankTeller', 'password3', 'BankTeller');
