@@ -104,27 +104,23 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//
-//        Query q = em.createNamedQuery("Person.findByUserId");
-//        q.setParameter("userId", userId);
-//        //Handle exception for unkown id
-//        Persons p = (Persons) q.getSingleResult();
-//        
-//        DTOPersonDetail pddto = 
-//                new DTOPersonDetail(
-//                p.getFirstName(), 
-//                p.getLastName(), 
-//                p.getEmail(), 
-//                p.getStreet(), 
-//                p.getZip(), 
-//                p.getCity(), 
-//                p.getPhonenumber(), 
-//                Assembler.accountObjectsToDTOAccounts(p.getAccountsCollection()), 
-//                Assembler.userObjectsToDTOUsers(p.getUsersCollection()));
-//        pddto.setId(p.getPersonId());
-//        
-//        return pddto;
+        Query q = em.createNamedQuery("Person.findByUserId");
+        q.setParameter("userId", userId);
+        //Handle exception for unkown id
+        Persons p = (Persons) q.getSingleResult();
+        DTOPersonDetail pddto = 
+                new DTOPersonDetail(
+                p.getFirstName(), 
+                p.getLastName(), 
+                p.getEmail(), 
+                p.getStreet(), 
+                p.getZip(), 
+                p.getCity(), 
+                p.getPhonenumber(), 
+                Assembler.accountObjectsToDTOAccounts(p.getAccountsCollection()), 
+                Assembler.userObjectsToDTOUsers(p.getUsersCollection()));
+        pddto.setId(p.getPersonId());
+        return pddto;
     }
 
     @Override
