@@ -9,8 +9,11 @@ import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
+import dto.DTOUser;
 import entities.Accounts;
+import entities.Assembler;
 import entities.Persons;
+import entities.Users;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -45,7 +48,21 @@ public class BankContractBean implements BankInterface {
         q.setParameter("id", id);
         //Handle exception for unkown id
         Persons p = (Persons) q.getSingleResult();
-        DTOPersonDetail pddto = new DTOPersonDetail(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber(), p.getAccountsCollection(), p.getUsersCollection());
+
+        ArrayList<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(new ArrayList<>(p.getAccountsCollection()));
+        ArrayList<DTOUser> users = Assembler.userObjectsToDTOUsers(new ArrayList<>(p.getUsersCollection()));
+
+        DTOPersonDetail pddto = new DTOPersonDetail(
+                p.getFirstName(),
+                p.getLastName(),
+                p.getEmail(),
+                p.getStreet(),
+                p.getZip(),
+                p.getCity(),
+                p.getPhonenumber(),
+                accounts,
+                users);
+
         pddto.setId(p.getPersonId());
         return pddto;
     }
@@ -61,10 +78,8 @@ public class BankContractBean implements BankInterface {
     @Override
     public ArrayList<DTOAccount> getAccounts() {
         Query q = em.createNamedQuery("Accounts.findAll");
-        //Handle exception for unkown id
-        Accounts a = (Accounts) q.getSingleResult();
-        DTOAccount adto = new DTOAccount(a.getAccountType(), a.getAccountNumber(), a.getInterest(), a.getBalance(), a.getCreated());
-        return adto;
+        List<Accounts> accounts = q.getResultList();
+        return Assembler.accountObjectsToDTOAccounts(accounts);
     }
 
     @Override
@@ -76,9 +91,14 @@ public class BankContractBean implements BankInterface {
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         Query q = em.createNamedQuery("Accounts.findByAccountNumber");
         q.setParameter("accountnumber", accountnumber);
-        //Handle exception for unkown id
         Accounts a = (Accounts) q.getSingleResult();
-        DTOAccount adto = new DTOAccount(a.getAccountType(), a.getAccountNumber(), a.getInterest(), a.getBalance(), a.getCreated());
+        
+        DTOAccount adto = new DTOAccount(
+                a.getAccountType(), 
+                a.getAccountNumber(), 
+                a.getInterest(), 
+                a.getBalance().longValue(), 
+                a.getCreated());
         return adto;
     }
 
@@ -88,7 +108,17 @@ public class BankContractBean implements BankInterface {
         q.setParameter("userId", userId);
         //Handle exception for unkown id
         Persons p = (Persons) q.getSingleResult();
-        DTOPersonDetail pddto = new DTOPersonDetail(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber(), p.getAccountsCollection(), p.getUsersCollection());
+        DTOPersonDetail pddto = 
+                new DTOPersonDetail(
+                p.getFirstName(), 
+                p.getLastName(), 
+                p.getEmail(), 
+                p.getStreet(), 
+                p.getZip(), 
+                p.getCity(), 
+                p.getPhonenumber(), 
+                Assembler.accountObjectsToDTOAccounts(p.getAccountsCollection()), 
+                Assembler.userObjectsToDTOUsers(p.getUsersCollection()));
         pddto.setId(p.getPersonId());
         return pddto;
     }
@@ -122,12 +152,12 @@ public class BankContractBean implements BankInterface {
     public ArrayList<String> getAccountTypes() {
         Query q = em.createNamedQuery("Roles.findAll");
         ArrayList<String> result = new ArrayList<>();
-        
+
         List<String> returned = q.getResultList();
-        for(String value : returned) {
+        for (String value : returned) {
             result.add(value);
         }
-        
+
         return result;
     }
 
@@ -136,7 +166,7 @@ public class BankContractBean implements BankInterface {
         DTOAccount acc = getAccountByAccountnumber(userId);
         acc.setAccountType(type);
         acc.setInterest(intrest);
-        
+
         persist(acc);
     }
 
