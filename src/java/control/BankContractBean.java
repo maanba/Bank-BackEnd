@@ -11,9 +11,11 @@ import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
 import dto.DTOUser;
+import entities.Accounts;
 import entities.Persons;
 import entities.Users;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -52,16 +54,19 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<String> getRoles() {
-        Query q = em.createNamedQuery("Users.findAll");
-        Users u = (Users) q.getSingleResult();
-        DTOUser udto = new DTOUser(u.getUsername(), u.getPassword(), u.getTitle());
-        udto.setId(u.getPersonId());
-        return udto;
+        Query q = em.createNamedQuery("Roles.findAll");
+        ArrayList<String> roles = new ArrayList();
+        roles.add(q.getSingleResult() + "");
+        return roles;
     }
 
     @Override
     public ArrayList<DTOAccount> getAccounts() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNamedQuery("Accounts.findAll");
+        //Handle exception for unkown id
+        Accounts a = (Accounts) q.getSingleResult();
+        DTOAccount adto = new DTOAccount(a.getAccountType(), a.getAccountNumber(), a.getInterest(), a.getBalance(), a.getCreated());
+        return adto;
     }
 
     @Override
