@@ -7,10 +7,10 @@
 package control;
 
 import contract.BankInterface;
-import entities.Account;
-import entities.Person;
+import dto.DTOAccount;
+import dto.DTOPerson;
+import dto.DTOPersonDetail;
 import java.util.ArrayList;
-import java.util.Map;
 import javax.ejb.Stateless;
 
 /**
@@ -21,12 +21,12 @@ import javax.ejb.Stateless;
 public class BankContractBean implements BankInterface {
 
     @Override
-    public Map<Integer, Person> getPersons() {
+    public DTOPerson getPerson(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Person getPerson(int id) {
+    public DTOPersonDetail getPersonDetail(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -36,27 +36,27 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    public ArrayList<Account> getAccounts() {
+    public ArrayList<DTOAccount> getAccounts() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Person> getPersonsByRole(String role) {
+    public ArrayList<DTOPerson> getPersonsByRole(String role) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Account getAccountByAccountnumber(int accountnumber) {
+    public DTOAccount getAccountByAccountnumber(int accountnumber) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Person getPersonByUserId(String userId) {
+    public DTOPersonDetail getPersonByUserId(String userId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Person getPersonByAccountNumber(int accountNumber) {
+    public DTOPerson getPersonByAccountNumber(int accountNumber) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -91,12 +91,13 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    public void savePerson(String role, String password, Person person) {
+    public void savePerson(String role, String password, DTOPerson person) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public String sayHello(String name) {
     return "Hello from " + name + " in the Bean";
     }
+    
 }

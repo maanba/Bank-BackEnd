@@ -5,7 +5,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -34,8 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Transactions.findByTransactionDate", query = "SELECT t FROM Transactions t WHERE t.transactionDate = :transactionDate"),
     @NamedQuery(name = "Transactions.findByTransactionNumber", query = "SELECT t FROM Transactions t WHERE t.transactionNumber = :transactionNumber"),
     @NamedQuery(name = "Transactions.findByAmount", query = "SELECT t FROM Transactions t WHERE t.amount = :amount"),
-    @NamedQuery(name = "Transactions.findByToAmount", query = "SELECT t FROM Transactions t WHERE t.toAmount = :toAmount"),
-    @NamedQuery(name = "Transactions.findByFromAmount", query = "SELECT t FROM Transactions t WHERE t.fromAmount = :fromAmount"),
     @NamedQuery(name = "Transactions.findByComment", query = "SELECT t FROM Transactions t WHERE t.comment = :comment")})
 public class Transactions implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -51,15 +48,6 @@ public class Transactions implements Serializable {
     @NotNull
     @Column(name = "AMOUNT")
     private int amount;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "TO_AMOUNT")
-    private BigDecimal toAmount;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "FROM_AMOUNT")
-    private BigDecimal fromAmount;
     @Size(max = 30)
     @Column(name = "COMMENT")
     private String comment;
@@ -77,11 +65,9 @@ public class Transactions implements Serializable {
         this.transactionNumber = transactionNumber;
     }
 
-    public Transactions(Integer transactionNumber, int amount, BigDecimal toAmount, BigDecimal fromAmount) {
+    public Transactions(Integer transactionNumber, int amount) {
         this.transactionNumber = transactionNumber;
         this.amount = amount;
-        this.toAmount = toAmount;
-        this.fromAmount = fromAmount;
     }
 
     public Date getTransactionDate() {
@@ -106,22 +92,6 @@ public class Transactions implements Serializable {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public BigDecimal getToAmount() {
-        return toAmount;
-    }
-
-    public void setToAmount(BigDecimal toAmount) {
-        this.toAmount = toAmount;
-    }
-
-    public BigDecimal getFromAmount() {
-        return fromAmount;
-    }
-
-    public void setFromAmount(BigDecimal fromAmount) {
-        this.fromAmount = fromAmount;
     }
 
     public String getComment() {

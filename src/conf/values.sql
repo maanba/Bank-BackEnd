@@ -22,10 +22,10 @@ INSERT INTO Accounts VALUES (1001, 'CheckingAccount', (NEXT VALUE FOR account_nu
 INSERT INTO Accounts VALUES (1002, 'CheckingAccount', (NEXT VALUE FOR account_number_sequence), 1.0, 27000.00, date('2000-07-10'));
 INSERT INTO Accounts VALUES (1003, 'CheckingAccount', (NEXT VALUE FOR account_number_sequence), 1.5, 9000.00, date('2001-07-10'));
 
-INSERT INTO Transactions VALUES (date('1995-12-25'), (NEXT VALUE FOR transaction_id_sequence), 5000, 5001, 500, 500, -500, 'Til Daniel Thomsen');
-INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction_id_sequence), 5001, 5000, 250, 250, -250, 'Til Mette imba');
-INSERT INTO Transactions VALUES (date('1995-12-25'), (NEXT VALUE FOR transaction_id_sequence), 5002, 5003, 970, 970, -970, 'Til Mark Fappington');
-INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction_id_sequence), 5003, 5002, 300, 300, -300, 'Til Svans Svanesen');
+INSERT INTO Transactions VALUES (date('1995-12-25'), (NEXT VALUE FOR transaction_id_sequence), 5000, 5001, 500, 'Til Daniel Thomsen');
+INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction_id_sequence), 5001, 5000, 250, 'Til Mette imba');
+INSERT INTO Transactions VALUES (date('1995-12-25'), (NEXT VALUE FOR transaction_id_sequence), 5002, 5003, 970, 'Til Mark Fappington');
+INSERT INTO Transactions VALUES (date('2000-04-06'), (NEXT VALUE FOR transaction_id_sequence), 5003, 5002, 300, 'Til Svans Svanesen');
 
 SELECT *
 FROM Persons;
