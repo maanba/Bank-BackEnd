@@ -10,12 +10,9 @@ import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
-import dto.DTOUser;
 import entities.Accounts;
 import entities.Persons;
-import entities.Users;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -76,12 +73,23 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNamedQuery("Accounts.findByAccountNumber");
+        q.setParameter("accountnumber", accountnumber);
+        //Handle exception for unkown id
+        Accounts a = (Accounts) q.getSingleResult();
+        DTOAccount adto = new DTOAccount(a.getAccountType(), a.getAccountNumber(), a.getInterest(), a.getBalance(), a.getCreated());
+        return adto;
     }
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNamedQuery("Person.findById");
+        q.setParameter("userId", userId);
+        //Handle exception for unkown id
+        Persons p = (Persons) q.getSingleResult();
+        DTOPersonDetail pddto = new DTOPersonDetail(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber(), p.getAccountsCollection(), p.getUsersCollection());
+        pddto.setId(p.getPersonId());
+        return pddto;
     }
 
     @Override

@@ -28,6 +28,10 @@ public class DTOAccount {
         this.created = created;
     }
 
+    public DTOAccount(String accountType, Integer accountNumber, double interest) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getAccountType() {
         return accountType;
     }
