@@ -10,7 +10,9 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,8 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
     @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
-    @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password"),
-    @NamedQuery(name = "Users.findByTitle", query = "SELECT u FROM Users u WHERE u.title = :title")})
+    @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
 public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,13 +45,11 @@ public class Users implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "PASSWORD")
     private String password;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "TITLE")
-    private String title;
     @ManyToMany(mappedBy = "usersCollection")
     private Collection<Persons> personsCollection;
+    @JoinColumn(name = "TITLE", referencedColumnName = "TITLE")
+    @ManyToOne(optional = false)
+    private Roles title;
 
     public Users() {
     }
@@ -59,10 +58,9 @@ public class Users implements Serializable {
         this.username = username;
     }
 
-    public Users(String username, String password, String title) {
+    public Users(String username, String password) {
         this.username = username;
         this.password = password;
-        this.title = title;
     }
 
     public String getUsername() {
@@ -81,14 +79,6 @@ public class Users implements Serializable {
         this.password = password;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     @XmlTransient
     public Collection<Persons> getPersonsCollection() {
         return personsCollection;
@@ -96,6 +86,14 @@ public class Users implements Serializable {
 
     public void setPersonsCollection(Collection<Persons> personsCollection) {
         this.personsCollection = personsCollection;
+    }
+
+    public Roles getTitle() {
+        return title;
+    }
+
+    public void setTitle(Roles title) {
+        this.title = title;
     }
 
     @Override

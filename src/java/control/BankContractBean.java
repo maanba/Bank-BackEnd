@@ -54,7 +54,6 @@ public class BankContractBean implements BankInterface {
     public ArrayList<String> getRoles() {
         Query q = em.createNamedQuery("Users.findAll");
         Users u = (Users) q.getSingleResult();
-        ArrayList<
         DTOUser udto = new DTOUser(u.getUsername(), u.getPassword(), u.getTitle());
         udto.setId(u.getPersonId());
         return udto;
