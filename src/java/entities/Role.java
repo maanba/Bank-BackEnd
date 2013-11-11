@@ -11,8 +11,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -27,9 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ROLES")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
-    @NamedQuery(name = "Role.findByTitle", query = "SELECT r FROM Role r WHERE r.title = :title")})
+
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

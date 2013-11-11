@@ -12,8 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,12 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "TRANSACTIONS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t"),
-    @NamedQuery(name = "Transaction.findByTransactionDate", query = "SELECT t FROM Transaction t WHERE t.transactionDate = :transactionDate"),
-    @NamedQuery(name = "Transaction.findByTransactionNumber", query = "SELECT t FROM Transaction t WHERE t.transactionNumber = :transactionNumber"),
-    @NamedQuery(name = "Transaction.findByAmount", query = "SELECT t FROM Transaction t WHERE t.amount = :amount"),
-    @NamedQuery(name = "Transaction.findByComment", query = "SELECT t FROM Transaction t WHERE t.comment = :comment")})
+
 public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "TRANSACTION_DATE")

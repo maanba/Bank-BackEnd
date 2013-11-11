@@ -9,16 +9,15 @@ import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
-import dto.DTOUser;
 import entities.Account;
 import entities.Assembler;
 import entities.Person;
-import entities.Person;
-import entities.Role;
+import entities.Transaction;
 import entities.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -58,7 +57,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<DTOAccount> getAccounts() {
-        Query q = em.createNamedQuery("Accounts.findAll");
+        Query q = em.createNamedQuery("Account.findAll");
         List<Account> account = q.getResultList();
         return Assembler.accountObjectsToDTOAccounts(account);
     }
@@ -78,7 +77,8 @@ public class BankContractBean implements BankInterface {
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         Account a = em.find(Account.class, accountnumber);
-        DTOAccount adto = Assembler.AccountObjectToDTOAccount(a);
+        System.out.println("Account coll1: " + a.getTransactionCollection());
+        DTOAccount adto = Assembler.AccountObjectToDTOAccountDetail(a);
         return adto;
     }
 
@@ -117,15 +117,23 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaction t = new Transaction(new Random().nextInt());
+        t.setFromAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(fromAccountNumber)));
+        t.setToAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(toAccountNumber)));
+
+        System.out.println("From: " + t.getFromAccountNumber());
+        System.out.println("To: " + t.getToAccountNumber());
+        t.setTransactionNumber(new Random().nextInt());
+        t.setAmount(amount);
+        t.setComment(comment);
+        persist(t);
+
     }
 
     @Override
     public int getNextPersonId() {
-        Query q = em.createNativeQuery(
-                "person_id_sequence.NEXTVAL from Bank");
+        Query q = em.createQuery("SELECT NEXT VALUE FOR person_id_sequence");
         return (int) q.getSingleResult();
-
     }
 
     @Override
