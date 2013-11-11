@@ -15,8 +15,10 @@ import entities.Person;
 import entities.Role;
 import entities.Transaction;
 import entities.User;
+
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
+
 import java.util.List;
 import java.util.Random;
 import javax.ejb.Stateless;
@@ -67,9 +69,9 @@ public class BankContractBean implements BankInterface {
     public ArrayList<DTOPerson> getPersonsByRole(String title) {
         ArrayList<User> users = new ArrayList<>(em.find(Role.class, title).getUserCollection());
         ArrayList<Person> person = new ArrayList<>();
-        for (User u : users){
-           ArrayList<Person> tmp = new ArrayList<>(u.getPersonCollection());
-           Person p = tmp.get(0);
+        for (User u : users) {
+            ArrayList<Person> tmp = new ArrayList<>(u.getPersonCollection());
+            Person p = tmp.get(0);
             person.add(p);
         }
         return Assembler.PersonObjectsToDTOPerson(person);
@@ -119,13 +121,24 @@ public class BankContractBean implements BankInterface {
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
         Transaction t = new Transaction(new Random().nextInt());
+        t.setTransactionDate(new Date());
         t.setFromAccountNumber(em.find(Account.class, fromAccountNumber));
         t.setToAccountNumber(em.find(Account.class, toAccountNumber));
         t.setTransactionNumber(new Random().nextInt());
         t.setAmount(amount);
         t.setComment(comment);
-        persist(t);
 
+        
+        // Gem transaction i hver account
+        Account acc1 = em.find(Account.class, fromAccountNumber);
+        acc1.getTransactionCollection().add(t);
+        acc1.getTransactionCollection1().add(t);
+
+        Account acc2 = em.find(Account.class, toAccountNumber);
+        acc2.getTransactionCollection().add(t);
+        acc2.getTransactionCollection1().add(t);
+
+        em.persist(t);
     }
 
     @Override
