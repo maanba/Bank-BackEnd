@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "ROLES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r"),
-    @NamedQuery(name = "Roles.findByTitle", query = "SELECT r FROM Roles r WHERE r.title = :title")})
-public class Roles implements Serializable {
+    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
+    @NamedQuery(name = "Role.findByTitle", query = "SELECT r FROM Role r WHERE r.title = :title")})
+public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -39,12 +39,12 @@ public class Roles implements Serializable {
     @Column(name = "TITLE")
     private String title;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "title")
-    private Collection<Users> usersCollection;
+    private Collection<User> userCollection;
 
-    public Roles() {
+    public Role() {
     }
 
-    public Roles(String title) {
+    public Role(String title) {
         this.title = title;
     }
 
@@ -57,12 +57,12 @@ public class Roles implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Users> getUsersCollection() {
-        return usersCollection;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setUsersCollection(Collection<Users> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override
@@ -75,10 +75,10 @@ public class Roles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Roles)) {
+        if (!(object instanceof Role)) {
             return false;
         }
-        Roles other = (Roles) object;
+        Role other = (Role) object;
         if ((this.title == null && other.title != null) || (this.title != null && !this.title.equals(other.title))) {
             return false;
         }
@@ -87,7 +87,7 @@ public class Roles implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Roles[ title=" + title + " ]";
+        return "entities.Role[ title=" + title + " ]";
     }
     
 }

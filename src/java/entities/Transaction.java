@@ -29,12 +29,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "TRANSACTIONS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Transactions.findAll", query = "SELECT t FROM Transactions t"),
-    @NamedQuery(name = "Transactions.findByTransactionDate", query = "SELECT t FROM Transactions t WHERE t.transactionDate = :transactionDate"),
-    @NamedQuery(name = "Transactions.findByTransactionNumber", query = "SELECT t FROM Transactions t WHERE t.transactionNumber = :transactionNumber"),
-    @NamedQuery(name = "Transactions.findByAmount", query = "SELECT t FROM Transactions t WHERE t.amount = :amount"),
-    @NamedQuery(name = "Transactions.findByComment", query = "SELECT t FROM Transactions t WHERE t.comment = :comment")})
-public class Transactions implements Serializable {
+    @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t"),
+    @NamedQuery(name = "Transaction.findByTransactionDate", query = "SELECT t FROM Transaction t WHERE t.transactionDate = :transactionDate"),
+    @NamedQuery(name = "Transaction.findByTransactionNumber", query = "SELECT t FROM Transaction t WHERE t.transactionNumber = :transactionNumber"),
+    @NamedQuery(name = "Transaction.findByAmount", query = "SELECT t FROM Transaction t WHERE t.amount = :amount"),
+    @NamedQuery(name = "Transaction.findByComment", query = "SELECT t FROM Transaction t WHERE t.comment = :comment")})
+public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "TRANSACTION_DATE")
     @Temporal(TemporalType.DATE)
@@ -53,19 +53,19 @@ public class Transactions implements Serializable {
     private String comment;
     @JoinColumn(name = "FROM_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
     @ManyToOne(optional = false)
-    private Accounts fromAccountNumber;
+    private Account fromAccountNumber;
     @JoinColumn(name = "TO_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
     @ManyToOne(optional = false)
-    private Accounts toAccountNumber;
+    private Account toAccountNumber;
 
-    public Transactions() {
+    public Transaction() {
     }
 
-    public Transactions(Integer transactionNumber) {
+    public Transaction(Integer transactionNumber) {
         this.transactionNumber = transactionNumber;
     }
 
-    public Transactions(Integer transactionNumber, int amount) {
+    public Transaction(Integer transactionNumber, int amount) {
         this.transactionNumber = transactionNumber;
         this.amount = amount;
     }
@@ -102,19 +102,19 @@ public class Transactions implements Serializable {
         this.comment = comment;
     }
 
-    public Accounts getFromAccountNumber() {
+    public Account getFromAccountNumber() {
         return fromAccountNumber;
     }
 
-    public void setFromAccountNumber(Accounts fromAccountNumber) {
+    public void setFromAccountNumber(Account fromAccountNumber) {
         this.fromAccountNumber = fromAccountNumber;
     }
 
-    public Accounts getToAccountNumber() {
+    public Account getToAccountNumber() {
         return toAccountNumber;
     }
 
-    public void setToAccountNumber(Accounts toAccountNumber) {
+    public void setToAccountNumber(Account toAccountNumber) {
         this.toAccountNumber = toAccountNumber;
     }
 
@@ -128,10 +128,10 @@ public class Transactions implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transactions)) {
+        if (!(object instanceof Transaction)) {
             return false;
         }
-        Transactions other = (Transactions) object;
+        Transaction other = (Transaction) object;
         if ((this.transactionNumber == null && other.transactionNumber != null) || (this.transactionNumber != null && !this.transactionNumber.equals(other.transactionNumber))) {
             return false;
         }
@@ -140,7 +140,7 @@ public class Transactions implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Transactions[ transactionNumber=" + transactionNumber + " ]";
+        return "entities.Transaction[ transactionNumber=" + transactionNumber + " ]";
     }
     
 }
