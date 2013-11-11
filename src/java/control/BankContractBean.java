@@ -56,7 +56,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<DTOAccount> getAccounts() {
-        Query q = em.createNamedQuery("Accounts.findAll");
+        Query q = em.createNamedQuery("Account.findAll");
         List<Account> account = q.getResultList();
         return Assembler.accountObjectsToDTOAccounts(account);
     }
