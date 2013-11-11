@@ -40,8 +40,8 @@ public class Assembler {
                 acc.getCreated());
 
         // Her fejler der muligvis noget.. 
-        newAcc.setTransactions(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection()));
-        newAcc.getTransactions().addAll(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection1()));
+        newAcc.setTransactions(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection(), acc));
+        newAcc.getTransactions().addAll(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection1(), acc));
 
         return newAcc;
 
@@ -114,21 +114,25 @@ public class Assembler {
         return result;
     }
 
-    public static DTOTransaction transactionToDTOTransaction(Transaction t) {
+    public static DTOTransaction transactionToDTOTransaction(Transaction t, Account acc) {
+        double amount = t.getAmount();
+        if(acc.getAccountNumber() == t.getFromAccountNumber().getAccountNumber()){
+            amount = t.getAmount() *-1;
+        }
         DTOTransaction result = new DTOTransaction(
                 t.getTransactionDate(),
                 t.getTransactionNumber(),
                 Assembler.AccountObjectToDTOAccount(t.getFromAccountNumber()),
                 Assembler.AccountObjectToDTOAccount(t.getToAccountNumber()),
-                (long) t.getAmount(),
+                amount,
                 t.getComment());
         return result;
     }
 
-    public static ArrayList<DTOTransaction> transactionsToDTOTransactions(Collection<Transaction> transactions) {
+    public static ArrayList<DTOTransaction> transactionsToDTOTransactions(Collection<Transaction> transactions, Account acc) {
         ArrayList<DTOTransaction> result = new ArrayList<>();
         for (Transaction value : transactions) {
-            result.add(Assembler.transactionToDTOTransaction(value));
+            result.add(Assembler.transactionToDTOTransaction(value, acc));
         }
         return result;
     }
