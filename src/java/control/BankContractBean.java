@@ -78,13 +78,13 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-        User user = em.find(User.class, userId);
-        if (user == null) {
+        Users user = em.find(Users.class, userId);
+        if (user == null) { // Could not find the user
             return null;
         }
-        System.out.println(user);
-        ArrayList<Person> person = new ArrayList<>(user.getPersonCollection());
-        Person p = person.get(0);
+        
+        ArrayList<Persons> persons = new ArrayList<>(user.getPersonsCollection());
+        Persons p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
     }
 
