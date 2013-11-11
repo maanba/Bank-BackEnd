@@ -104,18 +104,13 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-        System.out.println("Finder brugeren ud fra ID'et: " + userId);
         Users user = em.find(Users.class, userId);
-        System.out.println("Objektet indeholder: " + user);
-        
-        System.out.println("Får fat i PersonCollection fra objektet.. ");
+        if (user == null) {
+            return null;
+        }
+        System.out.println(user);
         ArrayList<Persons> persons = new ArrayList<>(user.getPersonsCollection());
-        System.out.println("Størrelsen er: " + persons.size());
-        
-        System.out.println("Får fat .get(0)...");
         Persons p = persons.get(0);
-        System.out.println(".get(0) indeholder: " + p);
-        
         return Assembler.PersonObjectToDTOPersonDetail(p);
     }
 
@@ -133,7 +128,11 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public boolean checkLogin(String username, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Users user = em.find(Users.class, username);
+        if (user == null) {
+            return false;
+        }
+        return (password.equalsIgnoreCase(user.getPassword()));
     }
 
     @Override
