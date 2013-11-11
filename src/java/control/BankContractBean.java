@@ -12,6 +12,7 @@ import dto.DTOPersonDetail;
 import entities.Account;
 import entities.Assembler;
 import entities.Person;
+import entities.Role;
 import entities.Transaction;
 import entities.User;
 import java.util.ArrayList;
