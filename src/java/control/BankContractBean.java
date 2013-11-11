@@ -119,11 +119,8 @@ public class BankContractBean implements BankInterface {
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
         Transaction t = new Transaction(new Random().nextInt());
-        t.setFromAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(fromAccountNumber)));
-        t.setToAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(toAccountNumber)));
-
-        System.out.println("From: " + t.getFromAccountNumber());
-        System.out.println("To: " + t.getToAccountNumber());
+        t.setFromAccountNumber(em.find(Account.class, fromAccountNumber));
+        t.setToAccountNumber(em.find(Account.class, toAccountNumber));
         t.setTransactionNumber(new Random().nextInt());
         t.setAmount(amount);
         t.setComment(comment);
