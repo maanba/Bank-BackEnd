@@ -10,10 +10,11 @@ import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
 import dto.DTOUser;
-import entities.Accounts;
+import entities.Account;
 import entities.Assembler;
-import entities.Persons;
-import entities.Users;
+import entities.Person;
+import entities.Person;
+import entities.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,7 +34,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPerson getPerson(int id) {
-        Persons p = em.find(Persons.class, id);
+        Person p = em.find(Person.class, id);
         DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
         pdto.setId(p.getPersonId());
         return pdto;
@@ -44,10 +45,10 @@ public class BankContractBean implements BankInterface {
         Query q = em.createNamedQuery("Person.findById");
         q.setParameter("id", id);
         //Handle exception for unkown id
-        Persons p = (Persons) q.getSingleResult();
+        Person p = (Person) q.getSingleResult();
 
-        ArrayList<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(new ArrayList<>(p.getAccountsCollection()));
-        ArrayList<DTOUser> users = Assembler.userObjectsToDTOUsers(new ArrayList<>(p.getUsersCollection()));
+        ArrayList<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(new ArrayList<>(p.getAccountCollection()));
+        ArrayList<DTOUser> users = Assembler.userObjectsToDTOUsers(new ArrayList<>(p.getUserCollection()));
 
         DTOPersonDetail pddto = new DTOPersonDetail(
                 p.getFirstName(),
@@ -75,8 +76,8 @@ public class BankContractBean implements BankInterface {
     @Override
     public ArrayList<DTOAccount> getAccounts() {
         Query q = em.createNamedQuery("Accounts.findAll");
-        List<Accounts> accounts = q.getResultList();
-        return Assembler.accountObjectsToDTOAccounts(accounts);
+        List<Account> account = q.getResultList();
+        return Assembler.accountObjectsToDTOAccounts(account);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class BankContractBean implements BankInterface {
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         Query q = em.createNamedQuery("Accounts.findByAccountNumber");
         q.setParameter("accountnumber", accountnumber);
-        Accounts a = (Accounts) q.getSingleResult();
+        Account a = (Account) q.getSingleResult();
 
         DTOAccount adto = new DTOAccount(
                 a.getAccountType(),
@@ -101,13 +102,13 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-        Users user = em.find(Users.class, userId);
+        User user = em.find(User.class, userId);
         if (user == null) {
             return null;
         }
         System.out.println(user);
-        ArrayList<Persons> persons = new ArrayList<>(user.getPersonsCollection());
-        Persons p = persons.get(0);
+        ArrayList<Person> person = new ArrayList<>(user.getPersonCollection());
+        Person p = person.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
     }
 
@@ -117,7 +118,7 @@ public class BankContractBean implements BankInterface {
         Query q = em.createNamedQuery("Person.findByAccounNumber");
         q.setParameter("accountNumber", accountNumber);
         //Handle exception for unkown id
-        Persons p = (Persons) q.getSingleResult();
+        Person p = (Person) q.getSingleResult();
         DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
         pdto.setId(p.getPersonId());
         return pdto;
@@ -125,7 +126,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public boolean checkLogin(String username, String password) {
-        Users user = em.find(Users.class, username);
+        User user = em.find(User.class, username);
         if (user == null) {
             return false;
         }
@@ -168,7 +169,7 @@ public class BankContractBean implements BankInterface {
     public void savePerson(String role, String password, DTOPerson person) {
         // Generate userpassword
         String username = person.getLastName() + person.getId() + role;
-        Users newUser = new Users(username, password);
+        User newUser = new User(username, password);
 
         // Persist the objects
         persist(newUser);
