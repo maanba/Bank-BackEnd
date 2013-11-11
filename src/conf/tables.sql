@@ -53,6 +53,6 @@ transaction_date date,
 transaction_number int PRIMARY KEY,
 from_account_number int NOT NULL references Accounts(account_number),
 to_account_number int NOT NULL references Accounts(account_number),
-amount int NOT NULL,
+amount double NOT NULL,
 comment varchar(30)
 );
