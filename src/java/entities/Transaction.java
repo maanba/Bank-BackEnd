@@ -40,7 +40,7 @@ public class Transaction implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "AMOUNT")
-    private int amount;
+    private double amount;
     @Size(max = 30)
     @Column(name = "COMMENT")
     private String comment;
@@ -58,7 +58,7 @@ public class Transaction implements Serializable {
         this.transactionNumber = transactionNumber;
     }
 
-    public Transaction(Integer transactionNumber, int amount) {
+    public Transaction(Integer transactionNumber, double amount) {
         this.transactionNumber = transactionNumber;
         this.amount = amount;
     }
@@ -79,11 +79,11 @@ public class Transaction implements Serializable {
         this.transactionNumber = transactionNumber;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
