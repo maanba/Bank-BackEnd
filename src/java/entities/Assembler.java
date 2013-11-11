@@ -25,7 +25,7 @@ public class Assembler {
                 acc.getAccountType(),
                 acc.getAccountNumber(),
                 acc.getInterest(),
-                acc.getBalance().longValue(),
+                acc.getBalance(),
                 acc.getCreated());
         return newAcc;
     }
@@ -36,7 +36,7 @@ public class Assembler {
                 acc.getAccountType(),
                 acc.getAccountNumber(),
                 acc.getInterest(),
-                acc.getBalance().longValue(),
+                acc.getBalance(),
                 acc.getCreated());
 
         // Her fejler der muligvis noget.. 
@@ -109,7 +109,7 @@ public class Assembler {
                 acc.getAccountnumber(),
                 acc.getAccountType(),
                 acc.getInterest(),
-                new BigDecimal(acc.getBalance()),
+                acc.getBalance(),
                 acc.getCreated());
         return result;
     }

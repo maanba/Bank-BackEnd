@@ -131,12 +131,10 @@ public class BankContractBean implements BankInterface {
         
         // Gem transaction i hver account
         Account acc1 = em.find(Account.class, fromAccountNumber);
-        acc1.getTransactionCollection().add(t);
-        acc1.getTransactionCollection1().add(t);
+        acc1.addFromTransaction(t);
 
         Account acc2 = em.find(Account.class, toAccountNumber);
-        acc2.getTransactionCollection().add(t);
-        acc2.getTransactionCollection1().add(t);
+        acc2.addToTransaction(t);
 
         em.persist(t);
     }

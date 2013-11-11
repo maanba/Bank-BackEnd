@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance"),
     @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
 public class Account implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
@@ -60,7 +61,7 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "BALANCE")
-    private BigDecimal balance;
+    private double balance;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CREATED")
@@ -81,7 +82,7 @@ public class Account implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public Account(Integer accountNumber, String accountType, double interest, BigDecimal balance, Date created) {
+    public Account(Integer accountNumber, String accountType, double interest, double balance, Date created) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.interest = interest;
@@ -113,11 +114,11 @@ public class Account implements Serializable {
         this.interest = interest;
     }
 
-    public BigDecimal getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -179,5 +180,14 @@ public class Account implements Serializable {
     public String toString() {
         return "entities.Account[ accountNumber=" + accountNumber + " ]";
     }
-    
+
+    public void addFromTransaction(Transaction t) {
+        transactionCollection.add(t);
+        balance = (balance - t.getAmount());
+    }
+
+    public void addToTransaction(Transaction t) {
+        transactionCollection1.add(t);
+        balance = (balance + t.getAmount());
+    }
 }
