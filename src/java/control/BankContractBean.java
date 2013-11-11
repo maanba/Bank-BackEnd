@@ -17,6 +17,7 @@ import entities.Person;
 import entities.Role;
 import entities.User;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -64,11 +65,15 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<DTOPerson> getPersonsByRole(String title) {
-        Query q = em.createNamedQuery("Role.findAll");
-        User u = em.find(User.class, title);
-        System.out.println("User " + u.toString());
-        return Assembler.PersonObjectsToDTOPerson(u.getPersonCollection());
+        ArrayList<User> users = new ArrayList<>(em.find(Role.class, title).getUserCollection());
+        ArrayList<Person> person = new ArrayList<>();
+        for (User u : users){
+           ArrayList<Person> tmp = new ArrayList<>(u.getPersonCollection());
+           Person p = tmp.get(0);
+            person.add(p);
         }
+        return Assembler.PersonObjectsToDTOPerson(person);
+    }
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
@@ -83,7 +88,7 @@ public class BankContractBean implements BankInterface {
         if (user == null) { // Could not find the user
             return null;
         }
-        
+
         ArrayList<Person> persons = new ArrayList<>(user.getPersonCollection());
         Person p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
