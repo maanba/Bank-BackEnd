@@ -117,7 +117,10 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public int getNextPersonId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNativeQuery(
+                "person_id_sequence.NEXTVAL from Bank");
+        return (int) q.getSingleResult();
+
     }
 
     @Override
