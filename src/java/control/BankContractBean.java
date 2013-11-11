@@ -131,11 +131,6 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    public void savePhysicalTransaction(int AccountNumber, long amount, String comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public int getNextPersonId() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
