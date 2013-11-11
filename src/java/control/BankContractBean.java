@@ -64,7 +64,9 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<DTOPerson> getPersonsByRole(String title) {
+        Query q = em.createNamedQuery("Role.findAll");
         User u = em.find(User.class, title);
+        System.out.println("User " + u.toString());
         return Assembler.PersonObjectsToDTOPerson(u.getPersonCollection());
         }
 
