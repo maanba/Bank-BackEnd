@@ -92,36 +92,20 @@ public class BankContractBean implements BankInterface {
         Query q = em.createNamedQuery("Accounts.findByAccountNumber");
         q.setParameter("accountnumber", accountnumber);
         Accounts a = (Accounts) q.getSingleResult();
-        
+
         DTOAccount adto = new DTOAccount(
-                a.getAccountType(), 
-                a.getAccountNumber(), 
-                a.getInterest(), 
-                a.getBalance().longValue(), 
+                a.getAccountType(),
+                a.getAccountNumber(),
+                a.getInterest(),
+                a.getBalance().longValue(),
                 a.getCreated());
         return adto;
     }
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
-//      MANGLER RIGTIG QUERY
-        Query q = em.createNamedQuery("Person.findByUserId");
-        q.setParameter("userId", userId);
-        //Handle exception for unkown id
-        Persons p = (Persons) q.getSingleResult();
-        DTOPersonDetail pddto = 
-                new DTOPersonDetail(
-                p.getFirstName(), 
-                p.getLastName(), 
-                p.getEmail(), 
-                p.getStreet(), 
-                p.getZip(), 
-                p.getCity(), 
-                p.getPhonenumber(), 
-                Assembler.accountObjectsToDTOAccounts(p.getAccountsCollection()), 
-                Assembler.userObjectsToDTOUsers(p.getUsersCollection()));
-        pddto.setId(p.getPersonId());
-        return pddto;
+        ArrayList<Persons> persons = new ArrayList<>(em.find(Users.class, userId).getPersonsCollection());
+        return Assembler.PersonObjectToDTOPersonDetail(persons.get(0));
     }
 
     @Override

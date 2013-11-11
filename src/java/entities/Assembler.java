@@ -5,6 +5,7 @@
 package entities;
 
 import dto.DTOAccount;
+import dto.DTOPersonDetail;
 import dto.DTOUser;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +46,21 @@ public class Assembler {
         for (Users user : users) {
             result.add(Assembler.userObjectToDTOUser(user));
         }
+        return result;
+    }
+    
+    public static DTOPersonDetail PersonObjectToDTOPersonDetail(Persons person) {
+        DTOPersonDetail result = new DTOPersonDetail(
+                person.getFirstName(), 
+                person.getLastName(), 
+                person.getEmail(), 
+                person.getStreet(), 
+                person.getZip(), 
+                person.getCity(), 
+                person.getPhonenumber(), 
+                Assembler.accountObjectsToDTOAccounts(person.getAccountsCollection()), 
+                Assembler.userObjectsToDTOUsers(person.getUsersCollection()));
+        
         return result;
     }
 }
