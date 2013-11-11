@@ -8,6 +8,7 @@ import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
 import dto.DTOUser;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -48,7 +49,7 @@ public class Assembler {
         }
         return result;
     }
-    
+
     public static DTOPersonDetail PersonObjectToDTOPersonDetail(Person person) {
         DTOPersonDetail result = new DTOPersonDetail(
                 person.getFirstName(),
@@ -63,27 +64,35 @@ public class Assembler {
         result.setId(person.getPersonId());
         return result;
     }
-    
-    public static DTOPerson personObjectToDtoPerson(Person p){
+
+    public static DTOPerson personObjectToDtoPerson(Person p) {
         DTOPerson dtop = new DTOPerson(
-                p.getFirstName(), 
-                p.getLastName(), 
-                p.getEmail(), 
-                p.getStreet(), 
-                p.getZip(), 
-                p.getCity(), 
+                p.getFirstName(),
+                p.getLastName(),
+                p.getEmail(),
+                p.getStreet(),
+                p.getZip(),
+                p.getCity(),
                 p.getPhonenumber());
         dtop.setId(p.getPersonId());
         return dtop;
     }
-    
-    public static ArrayList<DTOPerson> PersonObjectsToDTOPerson(Collection<Person> persons){
+
+    public static ArrayList<DTOPerson> PersonObjectsToDTOPerson(Collection<Person> persons) {
         ArrayList<DTOPerson> result = new ArrayList<>();
         for (Person person : persons) {
             result.add(Assembler.personObjectToDtoPerson(person));
         }
         return result;
     }
-    
-}
 
+    public static Account dtoAccountToAccount(DTOAccount acc) {
+        Account result = new Account(
+                acc.getAccountnumber(),
+                acc.getAccountType(),
+                acc.getInterest(),
+                new BigDecimal(acc.getBalance()),
+                acc.getCreated());
+        return result;
+    }
+}

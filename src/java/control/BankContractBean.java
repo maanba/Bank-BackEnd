@@ -9,12 +9,11 @@ import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
-import dto.DTOUser;
+import dto.DTOTransaction;
 import entities.Account;
 import entities.Assembler;
 import entities.Person;
-import entities.Person;
-import entities.Role;
+import entities.Transaction;
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +109,14 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Transaction t = new Transaction();
+        t.setFromAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(fromAccountNumber)));
+        t.setToAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(toAccountNumber)));
+        t.setAmount(amount);
+        t.setComment(comment);
+        
+        persist(t);
+        
     }
 
     @Override
