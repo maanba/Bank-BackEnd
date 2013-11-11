@@ -50,20 +50,6 @@ public class Assembler {
     }
 
     public static DTOPersonDetail PersonObjectToDTOPersonDetail(Persons person) {
-        String firstName = person.getFirstName();
-        String lastName = person.getLastName();
-        String email = person.getEmail();
-        String street = person.getStreet();
-        int zip = person.getZip();
-        String city = person.getCity();
-        int phoneNumber = person.getPhonenumber();
-        System.out.println("Getting accounts from Persons object");
-        Collection<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(person.getAccountsCollection());
-        System.out.println("Getting users from Persons object");
-        Collection<DTOUser> users = Assembler.userObjectsToDTOUsers(person.getUsersCollection());
-
-        System.out.println("Returnerer nyt objekt");
-
         DTOPersonDetail result = new DTOPersonDetail(
                 person.getFirstName(),
                 person.getLastName(),
@@ -74,7 +60,6 @@ public class Assembler {
                 person.getPhonenumber(),
                 Assembler.accountObjectsToDTOAccounts(person.getAccountsCollection()),
                 Assembler.userObjectsToDTOUsers(person.getUsersCollection()));
-        System.out.println("NU RETURNERER JEG !!!");
         return result;
     }
 }
