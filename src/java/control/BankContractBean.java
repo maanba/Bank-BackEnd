@@ -33,10 +33,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPerson getPerson(int id) {
-        Query q = em.createNamedQuery("Person.findById");
-        q.setParameter("id", id);
-        //Handle exception for unkown id
-        Persons p = (Persons) q.getSingleResult();
+        Persons p = em.find(Persons.class, id);
         DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
         pdto.setId(p.getPersonId());
         return pdto;
