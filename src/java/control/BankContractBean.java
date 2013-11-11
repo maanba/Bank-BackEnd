@@ -70,7 +70,7 @@ public class BankContractBean implements BankInterface {
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         Account a = em.find(Account.class, accountnumber);
-        DTOAccount adto = Assembler.AccountObjectToDTOAccount(a);
+        DTOAccount adto = Assembler.;
         return adto;
     }
 
