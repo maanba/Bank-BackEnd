@@ -34,13 +34,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "ACCOUNTS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Accounts.findAll", query = "SELECT a FROM Accounts a"),
-    @NamedQuery(name = "Accounts.findByAccountType", query = "SELECT a FROM Accounts a WHERE a.accountType = :accountType"),
-    @NamedQuery(name = "Accounts.findByAccountNumber", query = "SELECT a FROM Accounts a WHERE a.accountNumber = :accountNumber"),
-    @NamedQuery(name = "Accounts.findByInterest", query = "SELECT a FROM Accounts a WHERE a.interest = :interest"),
-    @NamedQuery(name = "Accounts.findByBalance", query = "SELECT a FROM Accounts a WHERE a.balance = :balance"),
-    @NamedQuery(name = "Accounts.findByCreated", query = "SELECT a FROM Accounts a WHERE a.created = :created")})
-public class Accounts implements Serializable {
+    @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
+    @NamedQuery(name = "Account.findByAccountType", query = "SELECT a FROM Account a WHERE a.accountType = :accountType"),
+    @NamedQuery(name = "Account.findByAccountNumber", query = "SELECT a FROM Account a WHERE a.accountNumber = :accountNumber"),
+    @NamedQuery(name = "Account.findByInterest", query = "SELECT a FROM Account a WHERE a.interest = :interest"),
+    @NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance"),
+    @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
+public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
@@ -68,20 +68,20 @@ public class Accounts implements Serializable {
     private Date created;
     @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
     @ManyToOne(optional = false)
-    private Persons personId;
+    private Person personId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccountNumber")
-    private Collection<Transactions> transactionsCollection;
+    private Collection<Transaction> transactionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "toAccountNumber")
-    private Collection<Transactions> transactionsCollection1;
+    private Collection<Transaction> transactionCollection1;
 
-    public Accounts() {
+    public Account() {
     }
 
-    public Accounts(Integer accountNumber) {
+    public Account(Integer accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public Accounts(Integer accountNumber, String accountType, double interest, BigDecimal balance, Date created) {
+    public Account(Integer accountNumber, String accountType, double interest, BigDecimal balance, Date created) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.interest = interest;
@@ -129,30 +129,30 @@ public class Accounts implements Serializable {
         this.created = created;
     }
 
-    public Persons getPersonId() {
+    public Person getPersonId() {
         return personId;
     }
 
-    public void setPersonId(Persons personId) {
+    public void setPersonId(Person personId) {
         this.personId = personId;
     }
 
     @XmlTransient
-    public Collection<Transactions> getTransactionsCollection() {
-        return transactionsCollection;
+    public Collection<Transaction> getTransactionCollection() {
+        return transactionCollection;
     }
 
-    public void setTransactionsCollection(Collection<Transactions> transactionsCollection) {
-        this.transactionsCollection = transactionsCollection;
+    public void setTransactionCollection(Collection<Transaction> transactionCollection) {
+        this.transactionCollection = transactionCollection;
     }
 
     @XmlTransient
-    public Collection<Transactions> getTransactionsCollection1() {
-        return transactionsCollection1;
+    public Collection<Transaction> getTransactionCollection1() {
+        return transactionCollection1;
     }
 
-    public void setTransactionsCollection1(Collection<Transactions> transactionsCollection1) {
-        this.transactionsCollection1 = transactionsCollection1;
+    public void setTransactionCollection1(Collection<Transaction> transactionCollection1) {
+        this.transactionCollection1 = transactionCollection1;
     }
 
     @Override
@@ -165,10 +165,10 @@ public class Accounts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Accounts)) {
+        if (!(object instanceof Account)) {
             return false;
         }
-        Accounts other = (Accounts) object;
+        Account other = (Account) object;
         if ((this.accountNumber == null && other.accountNumber != null) || (this.accountNumber != null && !this.accountNumber.equals(other.accountNumber))) {
             return false;
         }
@@ -177,7 +177,7 @@ public class Accounts implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Accounts[ accountNumber=" + accountNumber + " ]";
+        return "entities.Account[ accountNumber=" + accountNumber + " ]";
     }
     
 }

@@ -31,18 +31,16 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PERSONS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Persons.findAll", query = "SELECT p FROM Persons p"),
-    @NamedQuery(name = "Persons.findByPersonId", query = "SELECT p FROM Persons p WHERE p.personId = :personId"),
-    @NamedQuery(name = "Persons.findByFirstName", query = "SELECT p FROM Persons p WHERE p.firstName = :firstName"),
-    @NamedQuery(name = "Persons.findByLastName", query = "SELECT p FROM Persons p WHERE p.lastName = :lastName"),
-    @NamedQuery(name = "Persons.findByEmail", query = "SELECT p FROM Persons p WHERE p.email = :email"),
-    @NamedQuery(name = "Persons.findByStreet", query = "SELECT p FROM Persons p WHERE p.street = :street"),
-    @NamedQuery(name = "Persons.findByZip", query = "SELECT p FROM Persons p WHERE p.zip = :zip"),
-    @NamedQuery(name = "Persons.findByCity", query = "SELECT p FROM Persons p WHERE p.city = :city"),
-    @NamedQuery(name = "Persons.findByPhonenumber", query = "SELECT p FROM Persons p WHERE p.phonenumber = :phonenumber"),
-})
-public class Persons implements Serializable {
-
+    @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p"),
+    @NamedQuery(name = "Person.findByPersonId", query = "SELECT p FROM Person p WHERE p.personId = :personId"),
+    @NamedQuery(name = "Person.findByFirstName", query = "SELECT p FROM Person p WHERE p.firstName = :firstName"),
+    @NamedQuery(name = "Person.findByLastName", query = "SELECT p FROM Person p WHERE p.lastName = :lastName"),
+    @NamedQuery(name = "Person.findByEmail", query = "SELECT p FROM Person p WHERE p.email = :email"),
+    @NamedQuery(name = "Person.findByStreet", query = "SELECT p FROM Person p WHERE p.street = :street"),
+    @NamedQuery(name = "Person.findByZip", query = "SELECT p FROM Person p WHERE p.zip = :zip"),
+    @NamedQuery(name = "Person.findByCity", query = "SELECT p FROM Person p WHERE p.city = :city"),
+    @NamedQuery(name = "Person.findByPhonenumber", query = "SELECT p FROM Person p WHERE p.phonenumber = :phonenumber")})
+public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -87,18 +85,18 @@ public class Persons implements Serializable {
         @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")})
     @ManyToMany
-    private Collection<Users> usersCollection;
+    private Collection<User> userCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personId")
-    private Collection<Accounts> accountsCollection;
+    private Collection<Account> accountCollection;
 
-    public Persons() {
+    public Person() {
     }
 
-    public Persons(Integer personId) {
+    public Person(Integer personId) {
         this.personId = personId;
     }
 
-    public Persons(Integer personId, String firstName, String lastName, String email, String street, int zip, String city, int phonenumber) {
+    public Person(Integer personId, String firstName, String lastName, String email, String street, int zip, String city, int phonenumber) {
         this.personId = personId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -174,21 +172,21 @@ public class Persons implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Users> getUsersCollection() {
-        return usersCollection;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setUsersCollection(Collection<Users> usersCollection) {
-        this.usersCollection = usersCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @XmlTransient
-    public Collection<Accounts> getAccountsCollection() {
-        return accountsCollection;
+    public Collection<Account> getAccountCollection() {
+        return accountCollection;
     }
 
-    public void setAccountsCollection(Collection<Accounts> accountsCollection) {
-        this.accountsCollection = accountsCollection;
+    public void setAccountCollection(Collection<Account> accountCollection) {
+        this.accountCollection = accountCollection;
     }
 
     @Override
@@ -201,10 +199,10 @@ public class Persons implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Persons)) {
+        if (!(object instanceof Person)) {
             return false;
         }
-        Persons other = (Persons) object;
+        Person other = (Person) object;
         if ((this.personId == null && other.personId != null) || (this.personId != null && !this.personId.equals(other.personId))) {
             return false;
         }
@@ -213,6 +211,7 @@ public class Persons implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Persons[ personId=" + personId + " ]";
+        return "entities.Person[ personId=" + personId + " ]";
     }
+    
 }

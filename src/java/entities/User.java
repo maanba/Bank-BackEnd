@@ -29,12 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "USERS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
-    @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
-    @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
-
-public class Users implements Serializable {
-
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,20 +45,20 @@ public class Users implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "usersCollection")
-    private Collection<Persons> personsCollection;
+    @ManyToMany(mappedBy = "userCollection")
+    private Collection<Person> personCollection;
     @JoinColumn(name = "TITLE", referencedColumnName = "TITLE")
     @ManyToOne(optional = false)
-    private Roles title;
+    private Role title;
 
-    public Users() {
+    public User() {
     }
 
-    public Users(String username) {
+    public User(String username) {
         this.username = username;
     }
 
-    public Users(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -82,19 +80,19 @@ public class Users implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Persons> getPersonsCollection() {
-        return personsCollection;
+    public Collection<Person> getPersonCollection() {
+        return personCollection;
     }
 
-    public void setPersonsCollection(Collection<Persons> personsCollection) {
-        this.personsCollection = personsCollection;
+    public void setPersonCollection(Collection<Person> personCollection) {
+        this.personCollection = personCollection;
     }
 
-    public Roles getTitle() {
+    public Role getTitle() {
         return title;
     }
 
-    public void setTitle(Roles title) {
+    public void setTitle(Role title) {
         this.title = title;
     }
 
@@ -108,10 +106,10 @@ public class Users implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Users)) {
+        if (!(object instanceof User)) {
             return false;
         }
-        Users other = (Users) object;
+        User other = (User) object;
         if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
@@ -120,6 +118,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Users[ username=" + username + " ]";
+        return "entities.User[ username=" + username + " ]";
     }
+    
 }
