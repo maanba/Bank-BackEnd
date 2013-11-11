@@ -33,13 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "ACCOUNTS")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-    @NamedQuery(name = "Account.findByAccountType", query = "SELECT a FROM Account a WHERE a.accountType = :accountType"),
-    @NamedQuery(name = "Account.findByAccountNumber", query = "SELECT a FROM Account a WHERE a.accountNumber = :accountNumber"),
-    @NamedQuery(name = "Account.findByInterest", query = "SELECT a FROM Account a WHERE a.interest = :interest"),
-    @NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance"),
-    @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
+
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)

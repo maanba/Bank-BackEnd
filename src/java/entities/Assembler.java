@@ -49,7 +49,7 @@ public class Assembler {
         return result;
     }
 
-    public static DTOPersonDetail PersonObjectToDTOPersonDetail(Persons person) {
+    public static DTOPersonDetail PersonObjectToDTOPersonDetail(Person person) {
         DTOPersonDetail result = new DTOPersonDetail(
                 person.getFirstName(),
                 person.getLastName(),
@@ -58,8 +58,8 @@ public class Assembler {
                 person.getZip(),
                 person.getCity(),
                 person.getPhonenumber(),
-                Assembler.accountObjectsToDTOAccounts(person.getAccountsCollection()),
-                Assembler.userObjectsToDTOUsers(person.getUsersCollection()));
+                Assembler.accountObjectsToDTOAccounts(person.getAccountCollection()),
+                Assembler.userObjectsToDTOUsers(person.getUserCollection()));
         return result;
     }
     
