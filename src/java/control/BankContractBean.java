@@ -96,7 +96,7 @@ public class BankContractBean implements BankInterface {
         if (user == null) { // Could not find the user
             return null;
         }
-        
+
         ArrayList<Person> persons = new ArrayList<>(user.getPersonCollection());
         Person p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
@@ -130,7 +130,10 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public int getNextPersonId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNativeQuery(
+                "person_id_sequence.NEXTVAL from Bank");
+        return (int) q.getSingleResult();
+
     }
 
     @Override
