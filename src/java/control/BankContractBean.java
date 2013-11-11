@@ -13,6 +13,8 @@ import dto.DTOUser;
 import entities.Account;
 import entities.Assembler;
 import entities.Person;
+import entities.Person;
+import entities.Role;
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,26 +42,8 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonDetail(int id) {
-        Query q = em.createNamedQuery("Person.findById");
-        q.setParameter("id", id);
-        //Handle exception for unkown id
-        Person p = (Person) q.getSingleResult();
-
-        ArrayList<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(new ArrayList<>(p.getAccountCollection()));
-        ArrayList<DTOUser> users = Assembler.userObjectsToDTOUsers(new ArrayList<>(p.getUserCollection()));
-
-        DTOPersonDetail pddto = new DTOPersonDetail(
-                p.getFirstName(),
-                p.getLastName(),
-                p.getEmail(),
-                p.getStreet(),
-                p.getZip(),
-                p.getCity(),
-                p.getPhonenumber(),
-                accounts,
-                users);
-
-        pddto.setId(p.getPersonId());
+        Person p = em.find(Person.class, id);
+        DTOPersonDetail pddto = Assembler.PersonObjectToDTOPersonDetail(p);
         return pddto;
     }
 
@@ -79,9 +63,10 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    public ArrayList<DTOPerson> getPersonsByRole(String role) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public ArrayList<DTOPerson> getPersonsByRole(String title) {
+        User u = em.find(User.class, title);
+        return Assembler.PersonObjectsToDTOPerson(u.getPersonCollection());
+        }
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
@@ -96,7 +81,7 @@ public class BankContractBean implements BankInterface {
         if (user == null) { // Could not find the user
             return null;
         }
-
+        
         ArrayList<Person> persons = new ArrayList<>(user.getPersonCollection());
         Person p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);

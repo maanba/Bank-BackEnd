@@ -48,7 +48,7 @@ public class Assembler {
         }
         return result;
     }
-
+    
     public static DTOPersonDetail PersonObjectToDTOPersonDetail(Person person) {
         DTOPersonDetail result = new DTOPersonDetail(
                 person.getFirstName(),
@@ -60,6 +60,7 @@ public class Assembler {
                 person.getPhonenumber(),
                 Assembler.accountObjectsToDTOAccounts(person.getAccountCollection()),
                 Assembler.userObjectsToDTOUsers(person.getUserCollection()));
+        result.setId(person.getPersonId());
         return result;
     }
     
@@ -75,5 +76,14 @@ public class Assembler {
         dtop.setId(p.getPersonId());
         return dtop;
     }
+    
+    public static ArrayList<DTOPerson> PersonObjectsToDTOPerson(Collection<Person> persons){
+        ArrayList<DTOPerson> result = new ArrayList<>();
+        for (Person person : persons) {
+            result.add(Assembler.personObjectToDtoPerson(person));
+        }
+        return result;
+    }
+    
 }
 
