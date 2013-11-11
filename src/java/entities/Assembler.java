@@ -7,6 +7,7 @@ package entities;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
+import dto.DTOTransaction;
 import dto.DTOUser;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,8 +29,8 @@ public class Assembler {
                 acc.getCreated());
         return newAcc;
     }
-    
-    public static DTOAccount AccountObjectToDTOAccountDetail(Account acc){
+
+    public static DTOAccount AccountObjectToDTOAccountDetail(Account acc) {
         DTOAccount newAcc =
                 new DTOAccount(
                 acc.getAccountType(),
@@ -37,7 +38,13 @@ public class Assembler {
                 acc.getInterest(),
                 acc.getBalance().longValue(),
                 acc.getCreated());
+
+        // Her fejler der muligvis noget.. 
+        newAcc.setTransactions(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection()));
+        newAcc.getTransactions().addAll(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection1()));
+
         return newAcc;
+
     }
 
     public static ArrayList<DTOAccount> accountObjectsToDTOAccounts(Collection<Account> accounts) {
@@ -104,6 +111,25 @@ public class Assembler {
                 acc.getInterest(),
                 new BigDecimal(acc.getBalance()),
                 acc.getCreated());
+        return result;
+    }
+
+    public static DTOTransaction transactionToDTOTransaction(Transaction t) {
+        DTOTransaction result = new DTOTransaction(
+                t.getTransactionDate(),
+                t.getTransactionNumber(),
+                Assembler.AccountObjectToDTOAccount(t.getFromAccountNumber()),
+                Assembler.AccountObjectToDTOAccount(t.getToAccountNumber()),
+                (long) t.getAmount(),
+                t.getComment());
+        return result;
+    }
+
+    public static ArrayList<DTOTransaction> transactionsToDTOTransactions(Collection<Transaction> transactions) {
+        ArrayList<DTOTransaction> result = new ArrayList<>();
+        for (Transaction value : transactions) {
+            result.add(Assembler.transactionToDTOTransaction(value));
+        }
         return result;
     }
 }
