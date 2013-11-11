@@ -9,7 +9,6 @@ import contract.BankInterface;
 import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
-import dto.DTOTransaction;
 import entities.Account;
 import entities.Assembler;
 import entities.Person;
@@ -17,6 +16,7 @@ import entities.Transaction;
 import entities.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -67,7 +67,7 @@ public class BankContractBean implements BankInterface {
         User u = em.find(User.class, title);
         System.out.println("User " + u.toString());
         return Assembler.PersonObjectsToDTOPerson(u.getPersonCollection());
-        }
+    }
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
@@ -83,7 +83,7 @@ public class BankContractBean implements BankInterface {
         if (user == null) { // Could not find the user
             return null;
         }
-        
+
         ArrayList<Person> persons = new ArrayList<>(user.getPersonCollection());
         Person p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
@@ -112,22 +112,23 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
-        Transaction t = new Transaction();
+        Transaction t = new Transaction(new Random().nextInt());
         t.setFromAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(fromAccountNumber)));
         t.setToAccountNumber(Assembler.dtoAccountToAccount(getAccountByAccountnumber(toAccountNumber)));
+
+        System.out.println("From: " + t.getFromAccountNumber());
+        System.out.println("To: " + t.getToAccountNumber());
+        t.setTransactionNumber(new Random().nextInt());
         t.setAmount(amount);
         t.setComment(comment);
-        
         persist(t);
-        
+
     }
 
     @Override
     public int getNextPersonId() {
-        Query q = em.createNativeQuery(
-                "person_id_sequence.NEXTVAL from Bank");
+        Query q = em.createQuery("SELECT NEXT VALUE FOR person_id_sequence");
         return (int) q.getSingleResult();
-
     }
 
     @Override
