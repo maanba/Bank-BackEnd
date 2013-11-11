@@ -1,12 +1,13 @@
 package dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author Mads
  */
-public class DTOTimeDepositAccount extends DTOAccount {
+public class DTOTimeDepositAccount extends DTOAccount implements Serializable {
 
     private Date lockPeriodStart;
     private Date lockPeriodEnd;

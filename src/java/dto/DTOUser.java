@@ -6,6 +6,9 @@ package dto;
 
 import java.io.Serializable;
 
+
+
+
 /**
  *
  * @author Mads
