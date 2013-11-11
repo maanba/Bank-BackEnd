@@ -59,22 +59,8 @@ public class Assembler {
         }
         return result;
     }
-
+    
     public static DTOPersonDetail PersonObjectToDTOPersonDetail(Person person) {
-        String firstName = person.getFirstName();
-        String lastName = person.getLastName();
-        String email = person.getEmail();
-        String street = person.getStreet();
-        int zip = person.getZip();
-        String city = person.getCity();
-        int phoneNumber = person.getPhonenumber();
-        System.out.println("Getting accounts from Persons object");
-        Collection<DTOAccount> accounts = Assembler.accountObjectsToDTOAccounts(person.getAccountCollection());
-        System.out.println("Getting users from Persons object");
-        Collection<DTOUser> users = Assembler.userObjectsToDTOUsers(person.getUserCollection());
-
-        System.out.println("Returnerer nyt objekt");
-
         DTOPersonDetail result = new DTOPersonDetail(
                 person.getFirstName(),
                 person.getLastName(),
@@ -85,7 +71,7 @@ public class Assembler {
                 person.getPhonenumber(),
                 Assembler.accountObjectsToDTOAccounts(person.getAccountCollection()),
                 Assembler.userObjectsToDTOUsers(person.getUserCollection()));
-        System.out.println("NU RETURNERER JEG !!!");
+        result.setId(person.getPersonId());
         return result;
     }
     
@@ -101,5 +87,14 @@ public class Assembler {
         dtop.setId(p.getPersonId());
         return dtop;
     }
+    
+    public static ArrayList<DTOPerson> PersonObjectsToDTOPerson(Collection<Person> persons){
+        ArrayList<DTOPerson> result = new ArrayList<>();
+        for (Person person : persons) {
+            result.add(Assembler.personObjectToDtoPerson(person));
+        }
+        return result;
+    }
+    
 }
 
