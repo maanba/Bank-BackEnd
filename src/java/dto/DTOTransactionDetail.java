@@ -5,11 +5,13 @@
  */
 package dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Thomas
  */
-public class DTOTransactionDetail {
+public class DTOTransactionDetail implements Serializable {
 
     public DTOTransactionDetail(int transactionNumber, long amount, String comment) {
         this.transactionNumber = transactionNumber;

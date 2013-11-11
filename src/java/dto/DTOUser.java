@@ -4,11 +4,13 @@
  */
 package dto;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Mads
  */
-public class DTOUser {
+public class DTOUser implements Serializable {
     private String userId;
     private String password;
     private String title;

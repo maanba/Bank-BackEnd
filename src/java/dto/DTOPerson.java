@@ -4,13 +4,14 @@
  */
 package dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author DragønEye
  */
-public class DTOPerson {
+public class DTOPerson implements Serializable {
     private int id;
     private String firstName;
     private String lastName;

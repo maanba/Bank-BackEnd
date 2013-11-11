@@ -4,6 +4,7 @@
  */
 package dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
  *
  * @author DragønEye
  */
-public class DTOAccount {
+public class DTOAccount implements Serializable {
+   
 
     protected String accountType;
     protected int accountnumber;

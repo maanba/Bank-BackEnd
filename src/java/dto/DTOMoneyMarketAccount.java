@@ -4,6 +4,7 @@
  */
 package dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  * Bliver måske implementeret. 
  * @author Mads
  */
-public class DTOMoneyMarketAccount extends DTOAccount {
+public class DTOMoneyMarketAccount extends DTOAccount implements Serializable {
 
     private double minimumBalance;
 

@@ -104,6 +104,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
+//      MANGLER RIGTIG QUERY
         Query q = em.createNamedQuery("Person.findByUserId");
         q.setParameter("userId", userId);
         //Handle exception for unkown id
@@ -125,7 +126,14 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOPerson getPersonByAccountNumber(int accountNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//      MANGLER RIGTIG QUERY
+        Query q = em.createNamedQuery("Person.findByAccounNumber");
+        q.setParameter("accountNumber", accountNumber);
+        //Handle exception for unkown id
+        Persons p = (Persons) q.getSingleResult();
+        DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
+        pdto.setId(p.getPersonId());
+        return pdto;
     }
 
     @Override
