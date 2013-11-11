@@ -28,6 +28,17 @@ public class Assembler {
                 acc.getCreated());
         return newAcc;
     }
+    
+    public static DTOAccount AccountObjectToDTOAccountDetail(Account acc){
+        DTOAccount newAcc =
+                new DTOAccount(
+                acc.getAccountType(),
+                acc.getAccountNumber(),
+                acc.getInterest(),
+                acc.getBalance().longValue(),
+                acc.getCreated());
+        return newAcc;
+    }
 
     public static ArrayList<DTOAccount> accountObjectsToDTOAccounts(Collection<Account> accounts) {
         ArrayList<DTOAccount> result = new ArrayList<>();
