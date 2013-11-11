@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class DTOPersonDetail implements Serializable {
 
+    private static final long serialVersionUID = 7526472295622776147L;
     private int id;
     private String firstName;
     private String lastName;
