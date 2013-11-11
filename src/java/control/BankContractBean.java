@@ -36,8 +36,7 @@ public class BankContractBean implements BankInterface {
     @Override
     public DTOPerson getPerson(int id) {
         Person p = em.find(Person.class, id);
-        DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
-        pdto.setId(p.getPersonId());
+        DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
         return pdto;
     }
 
@@ -72,16 +71,8 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
-        Query q = em.createNamedQuery("Accounts.findByAccountNumber");
-        q.setParameter("accountnumber", accountnumber);
-        Account a = (Account) q.getSingleResult();
-
-        DTOAccount adto = new DTOAccount(
-                a.getAccountType(),
-                a.getAccountNumber(),
-                a.getInterest(),
-                a.getBalance().longValue(),
-                a.getCreated());
+        Account a = em.find(Account.class, accountnumber);
+        DTOAccount adto = Assembler.AccountObjectToDTOAccount(a);
         return adto;
     }
 

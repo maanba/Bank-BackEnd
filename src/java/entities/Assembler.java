@@ -25,7 +25,6 @@ public class Assembler {
                 acc.getInterest(),
                 acc.getBalance().longValue(),
                 acc.getCreated());
-
         return newAcc;
     }
 
@@ -71,6 +70,19 @@ public class Assembler {
                 Assembler.userObjectsToDTOUsers(person.getUserCollection()));
         result.setId(person.getPersonId());
         return result;
+    }
+    
+    public static DTOPerson personObjectToDtoPerson(Person p){
+        DTOPerson dtop = new DTOPerson(
+                p.getFirstName(), 
+                p.getLastName(), 
+                p.getEmail(), 
+                p.getStreet(), 
+                p.getZip(), 
+                p.getCity(), 
+                p.getPhonenumber());
+        dtop.setId(p.getPersonId());
+        return dtop;
     }
 }
 
