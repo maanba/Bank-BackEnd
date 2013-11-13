@@ -79,10 +79,13 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
-        Account a = em.find(Account.class, accountnumber);
-        System.out.println("Account coll1: " + a.getTransactionCollection());
-        DTOAccount adto = Assembler.AccountObjectToDTOAccountDetail(a);
-        return adto;
+        if (accountnumber != 0) {
+            Account a = em.find(Account.class, accountnumber);
+            System.out.println("Account coll1: " + a.getTransactionCollection());
+            DTOAccount adto = Assembler.AccountObjectToDTOAccountDetail(a);
+            return adto;
+        }
+        return null;
     }
 
     @Override
@@ -122,19 +125,28 @@ public class BankContractBean implements BankInterface {
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
         Transaction t = new Transaction(new Random().nextInt());
         t.setTransactionDate(new Date());
-        t.setFromAccountNumber(em.find(Account.class, fromAccountNumber));
-        t.setToAccountNumber(em.find(Account.class, toAccountNumber));
+        t.setFromAccountNumber(null);
+        t.setToAccountNumber(null);
+        if (fromAccountNumber != 0) {
+            t.setFromAccountNumber(em.find(Account.class, fromAccountNumber));
+        }
+        if (toAccountNumber != 0) {
+            t.setToAccountNumber(em.find(Account.class, toAccountNumber));
+        }
         t.setTransactionNumber(new Random().nextInt());
         t.setAmount(amount);
         t.setComment(comment);
 
-        
         // Gem transaction i hver account
-        Account acc1 = em.find(Account.class, fromAccountNumber);
-        acc1.addFromTransaction(t);
+        if (fromAccountNumber != 0) {
+            Account acc1 = em.find(Account.class, fromAccountNumber);
+            acc1.addFromTransaction(t);
+        }
 
-        Account acc2 = em.find(Account.class, toAccountNumber);
-        acc2.addToTransaction(t);
+        if (toAccountNumber != 0) {
+            Account acc2 = em.find(Account.class, toAccountNumber);
+            acc2.addToTransaction(t);
+        }
 
         em.persist(t);
     }
