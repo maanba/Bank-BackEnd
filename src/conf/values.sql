@@ -21,6 +21,10 @@ INSERT INTO Person_Users VALUES ('Svanesen1003Customer',1003);
 INSERT INTO Person_Users VALUES ('Svanesen1003BankTeller',1003);
 INSERT INTO Person_Users VALUES ('Svanesen1003Manager',1003);
 
+INSERT INTO Account_Types VALUES ('CheckingAccount');
+INSERT INTO Account_Types VALUES ('MoneyMarketAccount');
+INSERT INTO Account_Types VALUES ('TimeDepositAccount');
+
 INSERT INTO Accounts VALUES (1000, 'CheckingAccount', (NEXT VALUE FOR account_number_sequence), 1.0, 50054.3, date('1994-07-10'));
 INSERT INTO Accounts VALUES (1001, 'CheckingAccount', (NEXT VALUE FOR account_number_sequence), 1.5, 2700.58, date('1998-07-10'));
 INSERT INTO Accounts VALUES (1002, 'CheckingAccount', (NEXT VALUE FOR account_number_sequence), 1.0, 27000.00, date('2000-07-10'));

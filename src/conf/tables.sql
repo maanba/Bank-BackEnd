@@ -1,5 +1,6 @@
 DROP TABLE Transactions;
 DROP TABLE Accounts;
+DROP TABLE Account_Types;
 DROP TABLE Person_Users;
 DROP TABLE Users;
 DROP TABLE Persons;
@@ -39,9 +40,13 @@ person_id int NOT NULL REFERENCES Persons(person_id),
 PRIMARY KEY (username, person_id)
 );
 
+CREATE TABLE Account_Types (
+account_type varchar(30) PRIMARY KEY NOT NULL
+);
+
 CREATE TABLE Accounts (
 person_id int NOT NULL REFERENCES Persons(person_id),
-account_type varchar(30) NOT NULL,
+account_type varchar(30) NOT NULL REFERENCES Account_Types(account_type),
 account_number int PRIMARY KEY NOT NULL,
 interest double NOT NULL,
 balance decimal(10,2) NOT NULL,
@@ -56,3 +61,4 @@ to_account_number int references Accounts(account_number),
 amount double NOT NULL,
 comment varchar(30)
 );
+
