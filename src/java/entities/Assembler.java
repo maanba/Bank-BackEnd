@@ -27,6 +27,7 @@ public class Assembler {
                 acc.getInterest(),
                 acc.getBalance(),
                 acc.getCreated());
+
         return newAcc;
     }
 
@@ -38,6 +39,7 @@ public class Assembler {
                 acc.getInterest(),
                 acc.getBalance(),
                 acc.getCreated());
+
 
         // Her fejler der muligvis noget.. 
         newAcc.setTransactions(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection(), acc));
