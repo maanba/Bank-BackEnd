@@ -51,8 +51,8 @@ created date NOT NULL
 CREATE TABLE Transactions (
 transaction_date date,
 transaction_number int PRIMARY KEY,
-from_account_number int NOT NULL references Accounts(account_number),
-to_account_number int NOT NULL references Accounts(account_number),
+from_account_number int references Accounts(account_number),
+to_account_number int references Accounts(account_number),
 amount double NOT NULL,
 comment varchar(30)
 );
