@@ -20,24 +20,24 @@ import java.util.Collection;
 public class Assembler {
 
     public static DTOAccount AccountObjectToDTOAccount(Account acc) {
-        DTOAccount newAcc =
-                new DTOAccount(
-                acc.getAccountType(),
-                acc.getAccountNumber(),
-                acc.getInterest(),
-                acc.getBalance(),
-                acc.getCreated());
+        DTOAccount newAcc
+                = new DTOAccount(
+                        acc.getAccountType(),
+                        acc.getAccountNumber(),
+                        acc.getInterest(),
+                        acc.getBalance(),
+                        acc.getCreated());
         return newAcc;
     }
 
     public static DTOAccount AccountObjectToDTOAccountDetail(Account acc) {
-        DTOAccount newAcc =
-                new DTOAccount(
-                acc.getAccountType(),
-                acc.getAccountNumber(),
-                acc.getInterest(),
-                acc.getBalance(),
-                acc.getCreated());
+        DTOAccount newAcc
+                = new DTOAccount(
+                        acc.getAccountType(),
+                        acc.getAccountNumber(),
+                        acc.getInterest(),
+                        acc.getBalance(),
+                        acc.getCreated());
 
         // Her fejler der muligvis noget.. 
         newAcc.setTransactions(Assembler.transactionsToDTOTransactions(acc.getTransactionCollection(), acc));
@@ -116,14 +116,22 @@ public class Assembler {
 
     public static DTOTransaction transactionToDTOTransaction(Transaction t, Account acc) {
         double amount = t.getAmount();
-        if(acc.getAccountNumber() == t.getFromAccountNumber().getAccountNumber()){
-            amount = t.getAmount() *-1;
+        if (t.getFromAccountNumber() != null && acc.getAccountNumber() == t.getFromAccountNumber().getAccountNumber()) {
+            amount = t.getAmount() * -1;
+        }
+        DTOAccount dtoaFrom = null;
+        DTOAccount dtoaTo = null;
+        if (t.getFromAccountNumber() != null) {
+            dtoaFrom = Assembler.AccountObjectToDTOAccount(t.getFromAccountNumber());
+        }
+        if (t.getToAccountNumber() != null) {
+            dtoaTo = Assembler.AccountObjectToDTOAccount(t.getToAccountNumber());
         }
         DTOTransaction result = new DTOTransaction(
                 t.getTransactionDate(),
                 t.getTransactionNumber(),
-                Assembler.AccountObjectToDTOAccount(t.getFromAccountNumber()),
-                Assembler.AccountObjectToDTOAccount(t.getToAccountNumber()),
+                dtoaFrom,
+                dtoaTo,
                 amount,
                 t.getComment());
         return result;
