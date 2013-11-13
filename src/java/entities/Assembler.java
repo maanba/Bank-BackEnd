@@ -97,6 +97,19 @@ public class Assembler {
         dtop.setId(p.getPersonId());
         return dtop;
     }
+    public static Person DTOPersonObjectToDtoPerson(DTOPerson dtop) {
+        Person p = new Person(
+                dtop.getId(),
+                dtop.getFirstName(),
+                dtop.getLastName(),
+                dtop.getEmail(),
+                dtop.getStreet(),
+                dtop.getZip(),
+                dtop.getCity(),
+                dtop.getPhonenumber());
+        return p;
+    }
+
 
     public static ArrayList<DTOPerson> PersonObjectsToDTOPerson(Collection<Person> persons) {
         ArrayList<DTOPerson> result = new ArrayList<>();
