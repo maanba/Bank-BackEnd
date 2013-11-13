@@ -10,6 +10,7 @@ import dto.DTOAccount;
 import dto.DTOPerson;
 import dto.DTOPersonDetail;
 import entities.Account;
+import entities.AccountType;
 import entities.Assembler;
 import entities.Person;
 import entities.Role;
@@ -161,9 +162,9 @@ public class BankContractBean implements BankInterface {
     public ArrayList<String> getAccountTypes() {
         Query q = em.createNamedQuery("AccountType.findAll");
         ArrayList<String> result = new ArrayList<>();
-        List<String> returned = q.getResultList();
-        for (String value : returned) {
-            result.add(value);
+        List<AccountType> returned = q.getResultList();
+        for (int i = 0; i < returned.size(); i++) {
+            result.add(returned.get(i).getAccountType());
         }
 
         return result;
@@ -171,10 +172,16 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveAccount(int userId, String type, double intrest) {
-        DTOAccount acc = getAccountByAccountnumber(userId);
-        acc.setAccountType(type);
+        System.out.println("UserId " + userId);
+        Person p = em.find(Person.class, userId);
+        System.out.println("Person " + p.getFirstName());
+        Account acc = new Account();
+        AccountType act = new AccountType(type);
+        System.out.println("ACT " + act.getAccountType());
+        acc.setAccountType(act);
         acc.setInterest(intrest);
-
+        p.addAccount(acc);
+        System.out.println("Acc Added....");
         persist(acc);
     }
 
