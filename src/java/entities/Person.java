@@ -216,4 +216,8 @@ public class Person implements Serializable {
         return "entities.Person[ personId=" + personId + " ]";
     }
     
+    public void addAccount(Account acc){
+        accountCollection.add(acc);
+    }
+    
 }
