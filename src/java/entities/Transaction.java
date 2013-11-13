@@ -1,7 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entities;
 
 import java.io.Serializable;
@@ -12,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,12 +25,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Daniel Krarup Knudsen
+ * @author Thomas
  */
 @Entity
 @Table(name = "TRANSACTIONS")
 @XmlRootElement
-
+@NamedQueries({
+    @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t"),
+    @NamedQuery(name = "Transaction.findByTransactionDate", query = "SELECT t FROM Transaction t WHERE t.transactionDate = :transactionDate"),
+    @NamedQuery(name = "Transaction.findByTransactionNumber", query = "SELECT t FROM Transaction t WHERE t.transactionNumber = :transactionNumber"),
+    @NamedQuery(name = "Transaction.findByAmount", query = "SELECT t FROM Transaction t WHERE t.amount = :amount"),
+    @NamedQuery(name = "Transaction.findByComment", query = "SELECT t FROM Transaction t WHERE t.comment = :comment")})
 public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Column(name = "TRANSACTION_DATE")
@@ -45,10 +54,10 @@ public class Transaction implements Serializable {
     @Column(name = "COMMENT")
     private String comment;
     @JoinColumn(name = "FROM_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Account fromAccountNumber;
     @JoinColumn(name = "TO_ACCOUNT_NUMBER", referencedColumnName = "ACCOUNT_NUMBER")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Account toAccountNumber;
 
     public Transaction() {

@@ -147,9 +147,8 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public ArrayList<String> getAccountTypes() {
-        Query q = em.createNamedQuery("Roles.findAll");
+        Query q = em.createNamedQuery("AccountType.findAll");
         ArrayList<String> result = new ArrayList<>();
-
         List<String> returned = q.getResultList();
         for (String value : returned) {
             result.add(value);

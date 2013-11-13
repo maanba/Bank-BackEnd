@@ -1,7 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entities;
 
 import java.io.Serializable;
@@ -9,7 +11,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,32 +23,24 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Daniel Krarup Knudsen
+ * @author Thomas
  */
 @Entity
 @Table(name = "ACCOUNTS")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Account.findAll", query = "SELECT a FROM Account a"),
-    @NamedQuery(name = "Account.findByAccountType", query = "SELECT a FROM Account a WHERE a.accountType = :accountType"),
     @NamedQuery(name = "Account.findByAccountNumber", query = "SELECT a FROM Account a WHERE a.accountNumber = :accountNumber"),
     @NamedQuery(name = "Account.findByInterest", query = "SELECT a FROM Account a WHERE a.interest = :interest"),
     @NamedQuery(name = "Account.findByBalance", query = "SELECT a FROM Account a WHERE a.balance = :balance"),
     @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
 public class Account implements Serializable {
-
     private static final long serialVersionUID = 1L;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
-    @Column(name = "ACCOUNT_TYPE")
-    private String accountType;
     @Id
     @Basic(optional = false)
     @NotNull
@@ -70,9 +63,12 @@ public class Account implements Serializable {
     @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
     @ManyToOne(optional = false)
     private Person personId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fromAccountNumber")
+    @JoinColumn(name = "ACCOUNT_TYPE", referencedColumnName = "ACCOUNT_TYPE")
+    @ManyToOne(optional = false)
+    private AccountType accountType;
+    @OneToMany(mappedBy = "fromAccountNumber")
     private Collection<Transaction> transactionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "toAccountNumber")
+    @OneToMany(mappedBy = "toAccountNumber")
     private Collection<Transaction> transactionCollection1;
 
     public Account() {
@@ -82,20 +78,11 @@ public class Account implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public Account(Integer accountNumber, String accountType, double interest, double balance, Date created) {
+    public Account(Integer accountNumber, double interest, double balance, Date created) {
         this.accountNumber = accountNumber;
-        this.accountType = accountType;
         this.interest = interest;
         this.balance = balance;
         this.created = created;
-    }
-
-    public String getAccountType() {
-        return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
     }
 
     public Integer getAccountNumber() {
@@ -136,6 +123,14 @@ public class Account implements Serializable {
 
     public void setPersonId(Person personId) {
         this.personId = personId;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 
     @XmlTransient
@@ -180,8 +175,7 @@ public class Account implements Serializable {
     public String toString() {
         return "entities.Account[ accountNumber=" + accountNumber + " ]";
     }
-
-    public void addFromTransaction(Transaction t) {
+        public void addFromTransaction(Transaction t) {
         transactionCollection.add(t);
         balance = (balance - t.getAmount());
     }

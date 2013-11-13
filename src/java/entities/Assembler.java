@@ -22,7 +22,7 @@ public class Assembler {
     public static DTOAccount AccountObjectToDTOAccount(Account acc) {
         DTOAccount newAcc =
                 new DTOAccount(
-                acc.getAccountType(),
+                acc.getAccountType().getAccountType(),
                 acc.getAccountNumber(),
                 acc.getInterest(),
                 acc.getBalance(),
@@ -33,7 +33,7 @@ public class Assembler {
     public static DTOAccount AccountObjectToDTOAccountDetail(Account acc) {
         DTOAccount newAcc =
                 new DTOAccount(
-                acc.getAccountType(),
+                acc.getAccountType().getAccountType(),
                 acc.getAccountNumber(),
                 acc.getInterest(),
                 acc.getBalance(),
@@ -107,7 +107,6 @@ public class Assembler {
     public static Account dtoAccountToAccount(DTOAccount acc) {
         Account result = new Account(
                 acc.getAccountnumber(),
-                acc.getAccountType(),
                 acc.getInterest(),
                 acc.getBalance(),
                 acc.getCreated());

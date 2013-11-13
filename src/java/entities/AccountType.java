@@ -27,61 +27,61 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Thomas
  */
 @Entity
-@Table(name = "ROLES")
+@Table(name = "ACCOUNT_TYPES")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
-    @NamedQuery(name = "Role.findByTitle", query = "SELECT r FROM Role r WHERE r.title = :title")})
-public class Role implements Serializable {
+    @NamedQuery(name = "AccountType.findAll", query = "SELECT a FROM AccountType a"),
+    @NamedQuery(name = "AccountType.findByAccountType", query = "SELECT a FROM AccountType a WHERE a.accountType = :accountType")})
+public class AccountType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
-    @Column(name = "TITLE")
-    private String title;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "title")
-    private Collection<User> userCollection;
+    @Column(name = "ACCOUNT_TYPE")
+    private String accountType;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountType")
+    private Collection<Account> accountCollection;
 
-    public Role() {
+    public AccountType() {
     }
 
-    public Role(String title) {
-        this.title = title;
+    public AccountType(String accountType) {
+        this.accountType = accountType;
     }
 
-    public String getTitle() {
-        return title;
+    public String getAccountType() {
+        return accountType;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
 
     @XmlTransient
-    public Collection<User> getUserCollection() {
-        return userCollection;
+    public Collection<Account> getAccountCollection() {
+        return accountCollection;
     }
 
-    public void setUserCollection(Collection<User> userCollection) {
-        this.userCollection = userCollection;
+    public void setAccountCollection(Collection<Account> accountCollection) {
+        this.accountCollection = accountCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (title != null ? title.hashCode() : 0);
+        hash += (accountType != null ? accountType.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof AccountType)) {
             return false;
         }
-        Role other = (Role) object;
-        if ((this.title == null && other.title != null) || (this.title != null && !this.title.equals(other.title))) {
+        AccountType other = (AccountType) object;
+        if ((this.accountType == null && other.accountType != null) || (this.accountType != null && !this.accountType.equals(other.accountType))) {
             return false;
         }
         return true;
@@ -89,7 +89,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Role[ title=" + title + " ]";
+        return "entities.AccountType[ accountType=" + accountType + " ]";
     }
     
 }
