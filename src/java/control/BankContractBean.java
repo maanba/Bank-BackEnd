@@ -122,7 +122,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
-        Transaction t = new Transaction(new Random().nextInt());
+        Transaction t = new Transaction();
         t.setTransactionDate(new Date());
         t.setFromAccountNumber(null);
         t.setToAccountNumber(null);
@@ -132,7 +132,6 @@ public class BankContractBean implements BankInterface {
         if (toAccountNumber != 0) {
             t.setToAccountNumber(em.find(Account.class, toAccountNumber));
         }
-        t.setTransactionNumber(new Random().nextInt());
         t.setAmount(amount);
         t.setComment(comment);
 
