@@ -190,6 +190,8 @@ public class BankContractBean implements BankInterface {
         // Generate userpassword
         String username = person.getLastName() + person.getId() + role;
         User newUser = new User(username, password);
+        Role r = em.find(Role.class, role);
+        newUser.setTitle(r);
         Random rand = new Random();
         person.setId(rand.nextInt());
         Person p = Assembler.DTOPersonObjectToDtoPerson(person);
