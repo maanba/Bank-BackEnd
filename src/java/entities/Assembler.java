@@ -81,7 +81,6 @@ public class Assembler {
                 person.getPhonenumber(),
                 Assembler.accountObjectsToDTOAccounts(person.getAccountCollection()),
                 Assembler.userObjectsToDTOUsers(person.getUserCollection()));
-        result.setId(person.getPersonId());
         return result;
     }
 
@@ -107,6 +106,7 @@ public class Assembler {
                 dtop.getZip(),
                 dtop.getCity(),
                 dtop.getPhonenumber());
+        
         return p;
     }
 
