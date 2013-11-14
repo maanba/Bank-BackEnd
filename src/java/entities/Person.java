@@ -7,6 +7,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -89,7 +90,7 @@ public class Person implements Serializable {
     @JoinTable(name = "PERSON_USERS", joinColumns = {
         @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "USERNAME", referencedColumnName = "USERNAME")})
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Collection<User> userCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personId")
     private Collection<Account> accountCollection;
@@ -99,6 +100,13 @@ public class Person implements Serializable {
 
     public Person(Integer personId) {
         this.personId = personId;
+    }
+    
+    public void addUser(User u){
+        if(userCollection == null){
+            userCollection = new ArrayList();
+        }
+        userCollection.add(u);
     }
 
     public Person(Integer personId, String firstName, String lastName, String email, String street, int zip, String city, int phonenumber) {

@@ -9,7 +9,6 @@ import dto.DTOPerson;
 import dto.DTOPersonDetail;
 import dto.DTOTransaction;
 import dto.DTOUser;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -81,6 +80,7 @@ public class Assembler {
                 person.getPhonenumber(),
                 Assembler.accountObjectsToDTOAccounts(person.getAccountCollection()),
                 Assembler.userObjectsToDTOUsers(person.getUserCollection()));
+        result.setId(person.getPersonId());
         return result;
     }
 
@@ -97,16 +97,25 @@ public class Assembler {
         return dtop;
     }
     public static Person DTOPersonObjectToDtoPerson(DTOPerson dtop) {
-        Person p = new Person(
-                dtop.getId(),
-                dtop.getFirstName(),
-                dtop.getLastName(),
-                dtop.getEmail(),
-                dtop.getStreet(),
-                dtop.getZip(),
-                dtop.getCity(),
-                dtop.getPhonenumber());
-        
+        Person p = new Person();
+                p.setFirstName(dtop.getFirstName());
+                p.setLastName(dtop.getLastName());
+                p.setEmail(dtop.getEmail());
+                p.setStreet(dtop.getStreet());
+                p.setZip(dtop.getZip());
+                p.setCity(dtop.getCity());
+                p.setPhonenumber(dtop.getPhonenumber());
+        return p;
+    }
+    
+        public static Person savePersonObjectToDtoPerson(DTOPerson dtop, Person p) {
+                p.setFirstName(dtop.getFirstName());
+                p.setLastName(dtop.getLastName());
+                p.setEmail(dtop.getEmail());
+                p.setStreet(dtop.getStreet());
+                p.setZip(dtop.getZip());
+                p.setCity(dtop.getCity());
+                p.setPhonenumber(dtop.getPhonenumber());
         return p;
     }
 

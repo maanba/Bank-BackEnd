@@ -7,8 +7,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,7 +49,7 @@ public class User implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "userCollection")
+    @ManyToMany(mappedBy = "userCollection", cascade = CascadeType.ALL)
     private Collection<Person> personCollection;
     @JoinColumn(name = "TITLE", referencedColumnName = "TITLE")
     @ManyToOne(optional = false)
@@ -64,7 +66,13 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
     }
-
+    
+    public void addPerson(Person p){
+        if(personCollection == null){
+            personCollection = new ArrayList();
+        }
+        personCollection.add(p);
+    }
     public String getUsername() {
         return username;
     }
