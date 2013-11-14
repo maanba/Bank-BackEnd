@@ -16,10 +16,8 @@ import entities.Person;
 import entities.Role;
 import entities.Transaction;
 import entities.User;
-
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.util.List;
 import java.util.Random;
 import javax.ejb.Stateless;
@@ -172,16 +170,17 @@ public class BankContractBean implements BankInterface {
 
     @Override
     public void saveAccount(int userId, String type, double intrest) {
-        System.out.println("UserId " + userId);
         Person p = em.find(Person.class, userId);
-        System.out.println("Person " + p.getFirstName());
         Account acc = new Account();
-        AccountType act = new AccountType(type);
-        System.out.println("ACT " + act.getAccountType());
+        AccountType act = em.find(AccountType.class, type);
+        acc.setPersonId(p);
         acc.setAccountType(act);
         acc.setInterest(intrest);
+        acc.setBalance(0);
+        acc.setCreated(new Date());
+        
         p.addAccount(acc);
-        System.out.println("Acc Added....");
+        act.getAccountCollection().add(acc);
         persist(acc);
     }
 

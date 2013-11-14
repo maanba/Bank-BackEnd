@@ -7,18 +7,19 @@
 package entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,7 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
+    @SequenceGenerator(name="Acc_Seq", sequenceName = "account_number_sequence")
+    @Id @GeneratedValue(generator = "Acc_Seq")
     @Basic(optional = false)
     @NotNull
     @Column(name = "ACCOUNT_NUMBER")
