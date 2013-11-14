@@ -191,6 +191,7 @@ public class BankContractBean implements BankInterface {
         newUser.setTitle(r);
         Person p = Assembler.DTOPersonObjectToDtoPerson(person);
         String username = person.getLastName() + person.getId() + role;
+        System.out.println(username);
         newUser.setUsername(username);
         // Persist the objects
         persist(p);
