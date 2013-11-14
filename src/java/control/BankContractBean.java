@@ -183,6 +183,7 @@ public class BankContractBean implements BankInterface {
     
     @Override
     public void savePerson(String role, String password, DTOPerson person) {
+        
         if (person.getId() == 0) {            
             User newUser = new User();
             Role r = em.find(Role.class, role);
