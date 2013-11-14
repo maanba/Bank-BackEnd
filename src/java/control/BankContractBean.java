@@ -176,7 +176,7 @@ public class BankContractBean implements BankInterface {
         Person p = em.find(Person.class, userId);
         System.out.println("Person " + p.getFirstName());
         Account acc = new Account();
-        AccountType act = new AccountType(type);
+        AccountType act = em.find(AccountType.class, type);
         System.out.println("ACT " + act.getAccountType());
         acc.setAccountType(act);
         acc.setInterest(intrest);
