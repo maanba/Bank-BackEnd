@@ -7,12 +7,12 @@ INSERT INTO Roles VALUES ('Customer');
 INSERT INTO Roles VALUES ('BankTeller');
 INSERT INTO Roles VALUES ('Manager');
 
-INSERT INTO Users VALUES ('Imba1000Customer', 'password1', 'Customer');
-INSERT INTO Users VALUES ('Thomsen1001Customer', 'password2', 'Customer');
-INSERT INTO Users VALUES ('Fappington1002BankTeller', 'password3', 'BankTeller');
-INSERT INTO Users VALUES ('Svanesen1003Customer', 'password4', 'Customer');
-INSERT INTO Users VALUES ('Svanesen1003BankTeller', 'password4', 'BankTeller');
-INSERT INTO Users VALUES ('Svanesen1003Manager', 'password4', 'Manager');
+INSERT INTO Users VALUES ('Imba1000Customer', 'b14d501a594442a01c6859541bcb3e8164d183d32937b851835442f69d5c94e', 'Customer');
+INSERT INTO Users VALUES ('Thomsen1001Customer', '6cf615d5bcaac778352a8f1f3360d23f02f34ec182e259897fd6ce485d7870d4', 'Customer');
+INSERT INTO Users VALUES ('Fappington1002BankTeller', '5906ac361a137e2d286465cd6588ebb5ac3f5ae955001100bc41577c3d751764', 'BankTeller');
+INSERT INTO Users VALUES ('Svanesen1003Customer', 'b97873a40f73abedd8d685a7cd5e5f85e4a9cfb83eac26886640a0813850122b', 'Customer');
+INSERT INTO Users VALUES ('Svanesen1003BankTeller', 'b97873a40f73abedd8d685a7cd5e5f85e4a9cfb83eac26886640a0813850122b', 'BankTeller');
+INSERT INTO Users VALUES ('Svanesen1003Manager', 'b97873a40f73abedd8d685a7cd5e5f85e4a9cfb83eac26886640a0813850122b', 'Manager');
 
 INSERT INTO Person_Users VALUES ('Imba1000Customer',1000);
 INSERT INTO Person_Users VALUES ('Thomsen1001Customer',1001);
