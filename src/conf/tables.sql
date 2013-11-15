@@ -31,7 +31,7 @@ title varchar(30) PRIMARY KEY
 
 CREATE TABLE Users (
 username varchar(30) PRIMARY KEY NOT NULL,
-password varchar(30) NOT NULL,
+password varchar(255) NOT NULL,
 title varchar(30) NOT NULL REFERENCES Roles (title)
 );
 
