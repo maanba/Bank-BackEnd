@@ -30,24 +30,24 @@ import javax.persistence.Query;
  */
 @Stateless
 public class BankContractBean implements BankInterface {
-    
+
     @PersistenceContext(unitName = "BankBackendPU")
     private EntityManager em;
-    
+
     @Override
     public DTOPerson getPerson(int id) {
         Person p = em.find(Person.class, id);
         DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
         return pdto;
     }
-    
+
     @Override
     public DTOPersonDetail getPersonDetail(int id) {
         Person p = em.find(Person.class, id);
         DTOPersonDetail pddto = Assembler.PersonObjectToDTOPersonDetail(p);
         return pddto;
     }
-    
+
     @Override
     public ArrayList<String> getRoles() {
         Query q = em.createNamedQuery("Roles.findAll");
@@ -55,14 +55,14 @@ public class BankContractBean implements BankInterface {
         roles.add(q.getSingleResult() + "");
         return roles;
     }
-    
+
     @Override
     public ArrayList<DTOAccount> getAccounts() {
         Query q = em.createNamedQuery("Account.findAll");
         List<Account> account = q.getResultList();
         return Assembler.accountObjectsToDTOAccounts(account);
     }
-    
+
     @Override
     public ArrayList<DTOPerson> getPersonsByRole(String title) {
         ArrayList<User> users = new ArrayList<>(em.find(Role.class, title).getUserCollection());
@@ -74,7 +74,7 @@ public class BankContractBean implements BankInterface {
         }
         return Assembler.PersonObjectsToDTOPerson(person);
     }
-    
+
     @Override
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         if (accountnumber != 0) {
@@ -85,31 +85,26 @@ public class BankContractBean implements BankInterface {
         }
         return null;
     }
-    
+
     @Override
     public DTOPersonDetail getPersonByUserId(String userId) {
         User user = em.find(User.class, userId);
         if (user == null) { // Could not find the user
             return null;
         }
-        
+
         ArrayList<Person> persons = new ArrayList<>(user.getPersonCollection());
         Person p = persons.get(0);
         return Assembler.PersonObjectToDTOPersonDetail(p);
     }
-    
+
     @Override
     public DTOPerson getPersonByAccountNumber(int accountNumber) {
-//      MANGLER RIGTIG QUERY
-        Query q = em.createNamedQuery("Person.findByAccounNumber");
-        q.setParameter("accountNumber", accountNumber);
-        //Handle exception for unkown id
-        Person p = (Person) q.getSingleResult();
-        DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
-        pdto.setId(p.getPersonId());
+        Person p = em.find(Account.class, accountNumber).getPersonId();
+        DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
         return pdto;
     }
-    
+
     @Override
     public boolean checkLogin(String username, String password) {
         User user = em.find(User.class, username);
@@ -118,7 +113,7 @@ public class BankContractBean implements BankInterface {
         }
         return (password.equalsIgnoreCase(user.getPassword()));
     }
-    
+
     @Override
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
         Transaction t = new Transaction();
@@ -139,21 +134,21 @@ public class BankContractBean implements BankInterface {
             Account acc1 = em.find(Account.class, fromAccountNumber);
             acc1.addFromTransaction(t);
         }
-        
+
         if (toAccountNumber != 0) {
             Account acc2 = em.find(Account.class, toAccountNumber);
             acc2.addToTransaction(t);
         }
-        
+
         em.persist(t);
     }
-    
+
     @Override
     public int getNextPersonId() {
         Query q = em.createQuery("SELECT NEXT VALUE FOR person_id_sequence");
         return (int) q.getSingleResult();
     }
-    
+
     @Override
     public ArrayList<String> getAccountTypes() {
         Query q = em.createNamedQuery("AccountType.findAll");
@@ -162,29 +157,37 @@ public class BankContractBean implements BankInterface {
         for (int i = 0; i < returned.size(); i++) {
             result.add(returned.get(i).getAccountType());
         }
-        
+
         return result;
     }
-    
+
     @Override
-    public void saveAccount(int userId, String type, double intrest) {
+    public void saveAccount(int userId, int accountnumber, String type, double intrest) {
+
         Person p = em.find(Person.class, userId);
         Account acc = new Account();
         AccountType act = em.find(AccountType.class, type);
-        acc.setPersonId(p);
-        acc.setAccountType(act);
-        acc.setInterest(intrest);
-        acc.setBalance(0);
-        acc.setCreated(new Date());
-        p.addAccount(acc);
-        act.getAccountCollection().add(acc);
+        if (accountnumber == 0) {
+            acc.setPersonId(p);
+            acc.setAccountType(act);
+            acc.setInterest(intrest);
+            acc.setBalance(0);
+            acc.setCreated(new Date());
+            p.addAccount(acc);
+            act.getAccountCollection().add(acc);
+        } else {
+            acc.setPersonId(p);
+            acc = Assembler.dtoAccountToAccount(getAccountByAccountnumber(accountnumber));
+            acc.setAccountType(new AccountType(type));
+            acc.setInterest(intrest);
+        }
         persist(acc);
     }
-    
+
     @Override
     public void savePerson(String role, String password, DTOPerson person) {
-        
-        if (person.getId() == 0) {            
+
+        if (person.getId() == 0) {
             User newUser = new User();
             Role r = em.find(Role.class, role);
             Person p = Assembler.DTOPersonObjectToDtoPerson(person);
@@ -203,12 +206,12 @@ public class BankContractBean implements BankInterface {
             persist(p);
         }
     }
-    
+
     @Override
     public String sayHello(String name) {
         return "Hello from " + name + " in the Bean";
     }
-    
+
     public void persist(Object object) {
         em.persist(object);
     }
