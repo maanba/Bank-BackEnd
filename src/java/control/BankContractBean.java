@@ -108,13 +108,8 @@ public class BankContractBean implements BankInterface {
     @Override
     @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public DTOPerson getPersonByAccountNumber(int accountNumber) {
-//      MANGLER RIGTIG QUERY
-        Query q = em.createNamedQuery("Person.findByAccounNumber");
-        q.setParameter("accountNumber", accountNumber);
-        //Handle exception for unkown id
-        Person p = (Person) q.getSingleResult();
-        DTOPerson pdto = new DTOPerson(p.getFirstName(), p.getLastName(), p.getEmail(), p.getStreet(), p.getZip(), p.getCity(), p.getPhonenumber());
-        pdto.setId(p.getPersonId());
+        Person p = em.find(Account.class, accountNumber).getPersonId();
+        DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
         return pdto;
     }
 
@@ -178,35 +173,50 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    @RolesAllowed({"BankTeller", "Manager"})
-    public void saveAccount(int userId, String type, double intrest) {
+    public void saveAccount(int userId, int accountnumber, String type, double intrest) {
+
         Person p = em.find(Person.class, userId);
         Account acc = new Account();
         AccountType act = em.find(AccountType.class, type);
-        acc.setPersonId(p);
-        acc.setAccountType(act);
-        acc.setInterest(intrest);
-        acc.setBalance(0);
-        acc.setCreated(new Date());
-
-        p.addAccount(acc);
-        act.getAccountCollection().add(acc);
+        if (accountnumber == 0) {
+            acc.setPersonId(p);
+            acc.setAccountType(act);
+            acc.setInterest(intrest);
+            acc.setBalance(0);
+            acc.setCreated(new Date());
+            p.addAccount(acc);
+            act.getAccountCollection().add(acc);
+        } else {
+            acc.setPersonId(p);
+            acc = Assembler.dtoAccountToAccount(getAccountByAccountnumber(accountnumber));
+            acc.setAccountType(new AccountType(type));
+            acc.setInterest(intrest);
+        }
         persist(acc);
     }
 
     @Override
     @RolesAllowed({"BankTeller", "Manager"})
     public void savePerson(String role, String password, DTOPerson person) {
-        // Generate userpassword
-        User newUser = new User();
-        Role r = em.find(Role.class, role);
-        newUser.setTitle(r);
-        Person p = Assembler.DTOPersonObjectToDtoPerson(person);
-        String username = person.getLastName() + person.getId() + role;
-        newUser.setUsername(username);
-        // Persist the objects
-        persist(p);
-        persist(newUser);
+
+        if (person.getId() == 0) {
+            User newUser = new User();
+            Role r = em.find(Role.class, role);
+            Person p = Assembler.DTOPersonObjectToDtoPerson(person);
+            newUser.setTitle(r);
+            newUser.setPassword(password);
+            newUser.setUsername(person.getLastName() + person.getId() + role);
+            p.addUser(newUser);
+            newUser.addPerson(p);
+            r.getUserCollection().add(newUser);
+            persist(r);
+            persist(p);
+            persist(newUser);
+        } else {
+            Person p = em.find(Person.class, person.getId());
+            Assembler.savePersonObjectToDtoPerson(person, p);
+            persist(p);
+        }
     }
 
     @Override
