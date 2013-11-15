@@ -19,7 +19,7 @@ import entities.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,6 +36,7 @@ public class BankContractBean implements BankInterface {
     private EntityManager em;
 
     @Override
+    @RolesAllowed({"Customer", "Employees", "BankTeller", "Manager"})
     public DTOPerson getPerson(int id) {
         Person p = em.find(Person.class, id);
         DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
@@ -43,6 +44,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public DTOPersonDetail getPersonDetail(int id) {
         Person p = em.find(Person.class, id);
         DTOPersonDetail pddto = Assembler.PersonObjectToDTOPersonDetail(p);
@@ -50,6 +52,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public ArrayList<String> getRoles() {
         Query q = em.createNamedQuery("Roles.findAll");
         ArrayList<String> roles = new ArrayList();
@@ -58,6 +61,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public ArrayList<DTOAccount> getAccounts() {
         Query q = em.createNamedQuery("Account.findAll");
         List<Account> account = q.getResultList();
@@ -65,6 +69,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public ArrayList<DTOPerson> getPersonsByRole(String title) {
         ArrayList<User> users = new ArrayList<>(em.find(Role.class, title).getUserCollection());
         ArrayList<Person> person = new ArrayList<>();
@@ -77,6 +82,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         if (accountnumber != 0) {
             Account a = em.find(Account.class, accountnumber);
@@ -100,6 +106,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public DTOPerson getPersonByAccountNumber(int accountNumber) {
 //      MANGLER RIGTIG QUERY
         Query q = em.createNamedQuery("Person.findByAccounNumber");
@@ -121,6 +128,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
         Transaction t = new Transaction();
         t.setTransactionDate(new Date());
@@ -150,12 +158,14 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"BankTeller", "Manager"})
     public int getNextPersonId() {
         Query q = em.createQuery("SELECT NEXT VALUE FOR person_id_sequence");
         return (int) q.getSingleResult();
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public ArrayList<String> getAccountTypes() {
         Query q = em.createNamedQuery("AccountType.findAll");
         ArrayList<String> result = new ArrayList<>();
@@ -168,6 +178,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"BankTeller", "Manager"})
     public void saveAccount(int userId, String type, double intrest) {
         Person p = em.find(Person.class, userId);
         Account acc = new Account();
@@ -177,13 +188,14 @@ public class BankContractBean implements BankInterface {
         acc.setInterest(intrest);
         acc.setBalance(0);
         acc.setCreated(new Date());
-        
+
         p.addAccount(acc);
         act.getAccountCollection().add(acc);
         persist(acc);
     }
 
     @Override
+    @RolesAllowed({"BankTeller", "Manager"})
     public void savePerson(String role, String password, DTOPerson person) {
         // Generate userpassword
         User newUser = new User();
@@ -198,10 +210,13 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public String sayHello(String name) {
+        
         return "Hello from " + name + " in the Bean";
     }
 
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public void persist(Object object) {
         em.persist(object);
     }
