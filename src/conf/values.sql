@@ -14,13 +14,6 @@ INSERT INTO Users VALUES ('Svanesen1003Customer', 'password4', 'Customer');
 INSERT INTO Users VALUES ('Svanesen1003BankTeller', 'password4', 'BankTeller');
 INSERT INTO Users VALUES ('Svanesen1003Manager', 'password4', 'Manager');
 
-INSERT INTO User_Roles VALUES ('Imba1000Customer', 'Customer');
-INSERT INTO User_Roles VALUES ('Thomsen1001Customer', 'Customer');
-INSERT INTO User_Roles VALUES ('Fappington1002BankTeller', 'BankTeller');
-INSERT INTO User_Roles VALUES ('Svanesen1003Customer', 'Customer');
-INSERT INTO User_Roles VALUES ('Svanesen1003BankTeller', 'BankTeller');
-INSERT INTO User_Roles VALUES ('Svanesen1003Manager', 'Manager');
-
 INSERT INTO Person_Users VALUES ('Imba1000Customer',1000);
 INSERT INTO Person_Users VALUES ('Thomsen1001Customer',1001);
 INSERT INTO Person_Users VALUES ('Fappington1002BankTeller',1002);

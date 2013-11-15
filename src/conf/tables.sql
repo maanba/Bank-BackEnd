@@ -2,7 +2,6 @@ DROP TABLE Transactions;
 DROP TABLE Accounts;
 DROP TABLE Account_Types;
 DROP TABLE Person_Users;
-DROP TABLE User_Roles;
 DROP TABLE Users;
 DROP TABLE Persons;
 DROP TABLE Roles;
@@ -34,12 +33,6 @@ CREATE TABLE Users (
 username varchar(30) PRIMARY KEY NOT NULL,
 password varchar(30) NOT NULL,
 title varchar(30) NOT NULL REFERENCES Roles (title)
-);
-
-CREATE TABLE User_Roles (
-username varchar(30) NOT NULL REFERENCES Users(username),
-title varchar(30) NOT NULL REFERENCES Roles(title),
-PRIMARY KEY (username, title)
 );
 
 CREATE TABLE Person_Users (
