@@ -5,6 +5,7 @@ DROP TABLE Person_Users;
 DROP TABLE Users;
 DROP TABLE Persons;
 DROP TABLE Roles;
+
 DROP SEQUENCE person_id_sequence RESTRICT;
 DROP SEQUENCE transaction_id_sequence RESTRICT;
 DROP SEQUENCE account_number_sequence RESTRICT;

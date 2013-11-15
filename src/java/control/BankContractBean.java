@@ -187,8 +187,7 @@ public class BankContractBean implements BankInterface {
             p.addAccount(acc);
             act.getAccountCollection().add(acc);
         } else {
-            acc.setPersonId(p);
-            acc = Assembler.dtoAccountToAccount(getAccountByAccountnumber(accountnumber));
+            acc = em.find(Account.class, accountnumber);
             acc.setAccountType(new AccountType(type));
             acc.setInterest(intrest);
         }
