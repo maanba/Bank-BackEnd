@@ -19,7 +19,6 @@ import entities.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.security.DenyAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -222,12 +221,26 @@ public class BankContractBean implements BankInterface {
     @Override
     @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public String sayHello(String name) {
-        
+
         return "Hello from " + name + " in the Bean";
     }
 
     @RolesAllowed({"Customer", "BankTeller", "Manager"})
     public void persist(Object object) {
         em.persist(object);
+    }
+
+    @Override
+    @RolesAllowed({"Customer", "BankTeller", "Manager"})
+    public DTOPerson getAddressFromPhoneNumber(int phonenumber) {
+        Query q = em.createNamedQuery("Person.findByPhonenumber");
+        q.setParameter("phonenumber", phonenumber);
+        List<Person> r = q.getResultList();
+        if(r.size() > 0) {
+            return Assembler.personObjectToDtoPerson(r.get(0));
+        }
+        else {
+            return null;
+        }
     }
 }
