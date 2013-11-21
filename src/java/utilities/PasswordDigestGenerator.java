@@ -20,8 +20,10 @@ public class PasswordDigestGenerator {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(str.getBytes("UTF-8"));
         byte[] digest = md.digest();
+        
         BigInteger bigInt = new BigInteger(1, digest);
-        return bigInt.toString(16);
+        String result = bigInt.toString(16);
+        return String.format("%64s", result).replace(" ", "0");
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
