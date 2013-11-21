@@ -197,7 +197,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     @RolesAllowed({"BankTeller", "Manager"})
-    public void savePerson(String role, String password, DTOPerson person) {
+    public void savePerson(String username, String role, String password, DTOPerson person) {
 
         if (person.getId() == 0) {
             User newUser = new User();
@@ -205,7 +205,7 @@ public class BankContractBean implements BankInterface {
             Person p = Assembler.DTOPersonObjectToDtoPerson(person);
             newUser.setTitle(r);
             newUser.setPassword(password);
-            newUser.setUsername(person.getLastName() + person.getId() + role);
+            newUser.setUsername(username);
             p.addUser(newUser);
             newUser.addPerson(p);
             r.getUserCollection().add(newUser);
