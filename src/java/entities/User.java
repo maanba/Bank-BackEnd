@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entities;
 
 import java.io.Serializable;
@@ -42,6 +41,7 @@ import utilities.PasswordDigestGenerator;
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,7 +51,7 @@ public class User implements Serializable {
     private String username;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 64)
     @Column(name = "PASSWORD")
     private String password;
     @ManyToMany(mappedBy = "userCollection", cascade = CascadeType.ALL)
@@ -77,13 +77,14 @@ public class User implements Serializable {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void addPerson(Person p){
-        if(personCollection == null){
+
+    public void addPerson(Person p) {
+        if (personCollection == null) {
             personCollection = new ArrayList();
         }
         personCollection.add(p);
     }
+
     public String getUsername() {
         return username;
     }
@@ -97,7 +98,13 @@ public class User implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        try {
+            this.password = PasswordDigestGenerator.getEncoded(password);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @XmlTransient
@@ -141,5 +148,5 @@ public class User implements Serializable {
     public String toString() {
         return "entities.User[ username=" + username + " ]";
     }
-    
+
 }
