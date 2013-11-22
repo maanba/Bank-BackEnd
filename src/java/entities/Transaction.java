@@ -43,7 +43,7 @@ public class Transaction implements Serializable {
     @Column(name = "TRANSACTION_DATE")
     @Temporal(TemporalType.DATE)
     private Date transactionDate;
-    @SequenceGenerator(name="Trans_Seq", sequenceName = "transaction_id_sequence")
+    @SequenceGenerator(allocationSize = 1, initialValue= 1, name="Trans_Seq", sequenceName = "transaction_id_sequence")
     @Id @GeneratedValue(generator = "Trans_Seq")
     @Basic(optional = false)
     @NotNull

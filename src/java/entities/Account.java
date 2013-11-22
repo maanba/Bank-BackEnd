@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByCreated", query = "SELECT a FROM Account a WHERE a.created = :created")})
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
-    @SequenceGenerator(name="Acc_Seq", sequenceName = "account_number_sequence")
+    @SequenceGenerator(allocationSize = 1, initialValue= 1, name="Acc_Seq", sequenceName = "account_number_sequence")
     @Id @GeneratedValue(generator = "Acc_Seq")
     @Basic(optional = false)
     @NotNull

@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Person.findByPhonenumber", query = "SELECT p FROM Person p WHERE p.phonenumber = :phonenumber")})
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
-    @SequenceGenerator(name="Pers_Seq", sequenceName = "person_id_sequence")
+    @SequenceGenerator(allocationSize = 1, initialValue= 1, name="Pers_Seq", sequenceName = "person_id_sequence")
     @Id @GeneratedValue(generator = "Pers_Seq")
     @Basic(optional = false)
     @NotNull
