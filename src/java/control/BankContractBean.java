@@ -86,9 +86,10 @@ public class BankContractBean implements BankInterface {
     public DTOAccount getAccountByAccountnumber(int accountnumber) {
         if (accountnumber != 0) {
             Account a = em.find(Account.class, accountnumber);
-            System.out.println("Account coll1: " + a.getTransactionCollection());
-            DTOAccount adto = Assembler.AccountObjectToDTOAccountDetail(a);
-            return adto;
+            if (a != null) {
+                DTOAccount adto = Assembler.AccountObjectToDTOAccountDetail(a);
+                return adto;
+            }
         }
         return null;
     }
@@ -236,10 +237,9 @@ public class BankContractBean implements BankInterface {
         Query q = em.createNamedQuery("Person.findByPhonenumber");
         q.setParameter("phonenumber", phonenumber);
         List<Person> r = q.getResultList();
-        if(r.size() > 0) {
+        if (r.size() > 0) {
             return Assembler.personObjectToDtoPerson(r.get(0));
-        }
-        else {
+        } else {
             return null;
         }
     }
