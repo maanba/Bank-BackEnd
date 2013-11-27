@@ -6,6 +6,7 @@
 
 package entities;
 
+import exceptions.CustomException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -177,7 +178,10 @@ public class Account implements Serializable {
     public String toString() {
         return "entities.Account[ accountNumber=" + accountNumber + " ]";
     }
-        public void addFromTransaction(Transaction t) {
+        public void addFromTransaction(Transaction t) throws CustomException {
+            if(balance - t.getAmount() < 0){
+               throw new CustomException("Balance not high enough");
+            }
         transactionCollection.add(t);
         balance = (balance - t.getAmount());
     }

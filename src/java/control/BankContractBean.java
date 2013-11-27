@@ -16,6 +16,7 @@ import entities.Person;
 import entities.Role;
 import entities.Transaction;
 import entities.User;
+import exceptions.CustomException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,7 +126,7 @@ public class BankContractBean implements BankInterface {
 
     @Override
     @RolesAllowed({"Customer", "BankTeller", "Manager"})
-    public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) {
+    public void saveTransaction(int fromAccountNumber, int toAccountNumber, long amount, String comment) throws CustomException{
         Transaction t = new Transaction();
         t.setTransactionDate(new Date());
         t.setFromAccountNumber(null);
