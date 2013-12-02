@@ -37,7 +37,7 @@ public class BankContractBean implements BankInterface {
     private EntityManager em;
 
     @Override
-    @RolesAllowed({"Customer", "Employees", "BankTeller", "Manager"})
+//    @RolesAllowed({"Customer", "Employees", "BankTeller", "Manager"})
     public DTOPerson getPerson(int id) {
         Person p = em.find(Person.class, id);
         DTOPerson pdto = Assembler.personObjectToDtoPerson(p);
@@ -197,7 +197,7 @@ public class BankContractBean implements BankInterface {
     }
 
     @Override
-    @RolesAllowed({"BankTeller", "Manager"})
+//    @RolesAllowed({"BankTeller", "Manager"})
     public void savePerson(String username, String role, String password, DTOPerson person) {
 
         if (person.getId() == 0) {
